@@ -22,10 +22,10 @@ public class DataManager<T: NSManagedObject> {
     self.context = context.managedObjectContext
   }
 
-  let entityName: String
-  let context:    ManagedObjectContext
+  public let entityName: String
+  public let context:    ManagedObjectContext
 
-  lazy var entity: NSEntityDescription = {
+  public lazy var entity: NSEntityDescription = {
     return NSEntityDescription.entityForName(
       self.entityName,
       inManagedObjectContext: self.context.underlyingContext
@@ -33,7 +33,7 @@ public class DataManager<T: NSManagedObject> {
     }()
 
   /// Finds an object by its ID.
-  func findWithID(id: AnyObject) -> T? {
+  public func findWithID(id: AnyObject) -> T? {
     let query = QuerySet<T>(context.underlyingContext, entityName)
     let mapper = DataMapper<NSManagedObject>(entityName: entityName, context: context)
 
@@ -46,18 +46,18 @@ public class DataManager<T: NSManagedObject> {
     }
   }
 
-  func insert() -> T {
+  public func insert() -> T {
     return T(entity: entity, insertIntoManagedObjectContext: context.underlyingContext)
   }
 
   /// Finds or inserts an object from the given JSON. The id is taken from the "id" property.
-  func findOrInsertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
+  public func findOrInsertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let id: AnyObject = DataMapper<T>(entityName: entityName, context: context).getIDFromJSON(json)
     return findWithID(id) ?? insertWithJSON(json, extra: extra)
   }
 
   /// Inserts or updates an object from the given JSON. The id is taken from the "id" property.
-  func insertOrUpdateWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
+  public func insertOrUpdateWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let id: AnyObject = DataMapper<T>(entityName: entityName, context: context).getIDFromJSON(json)
     let object = findWithID(id) ?? insert()
 
@@ -65,13 +65,13 @@ public class DataManager<T: NSManagedObject> {
   }
 
   /// Inserts an object from the given JSON.
-  func insertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
+  public func insertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let object = insert()
     return update(object, withJSON: json, extra: extra)
   }
 
   /// Updates an object from the given JSON.
-  func update(object: T, withJSON json: JSON, extra: [String: AnyObject?] = [:]) -> T {
+  public func update(object: T, withJSON json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let mapper = DataMapper<T>(entityName: entityName, context: context)
     mapper.mapJSON(json, toObject: object)
 
@@ -83,7 +83,7 @@ public class DataManager<T: NSManagedObject> {
   }
 
   /// Inserts a set of objects from a JSON array.
-  func insertSetWithJSON(json: JSON, extra: [String: AnyObject?] = [:], updateExisting: Bool = true, orderOffset: Int = 0) -> [T] {
+  public func insertSetWithJSON(json: JSON, extra: [String: AnyObject?] = [:], updateExisting: Bool = true, orderOffset: Int = 0) -> [T] {
     var set: [T] = []
     let mapper = DataMapper<T>(entityName: entityName, context: context)
 
@@ -113,7 +113,7 @@ public class DataManager<T: NSManagedObject> {
     return set
   }
 
-  func deleteAll() -> Int {
+  public func deleteAll() -> Int {
     let querySet = QuerySet<NSManagedObject>(context.underlyingContext, entityName)
     return querySet.delete().count
   }

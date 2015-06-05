@@ -124,6 +124,10 @@ public class ManagedObjectContext: NSObject {
     }
   }
 
+  public func deleteObject(object: NSManagedObject) {
+    underlyingContext.deleteObject(object)
+  }
+
   // MARK: - Synchronization
 
   var isObserver = false

@@ -78,28 +78,28 @@ public class CoreDataStack {
   }
 
   /// Saves changes asynchronously using the given block on the given context.
-  func save(#context: NamedObjectContext, block: ManagedObjectContext.ContextBlock) -> Future<Void> {
+  public func save(#context: NamedObjectContext, block: ManagedObjectContext.ContextBlock) -> Future<Void> {
     return namedContext(context).save(block)
   }
-  func save(block: ManagedObjectContext.ContextBlock) -> Future<Void> {
+  public func save(block: ManagedObjectContext.ContextBlock) -> Future<Void> {
     return save(context: .Background, block: block)
   }
 
   /// Saves changes synchronously using the given block on the given context.
-  func saveAndWait(#context: NamedObjectContext, _ error: NSErrorPointer = nil, block: ManagedObjectContext.ContextBlock) -> Bool {
+  public func saveAndWait(#context: NamedObjectContext, _ error: NSErrorPointer = nil, block: ManagedObjectContext.ContextBlock) -> Bool {
     return namedContext(context).saveAndWait(error: error, block: block)
   }
-  func saveAndWait(block: ManagedObjectContext.ContextBlock) -> Bool {
+  public func saveAndWait(block: ManagedObjectContext.ContextBlock) -> Bool {
     return saveAndWait(context: .Background, block: block)
   }
 
   /// Creates a new query for the given type.
-  func query<T: NSManagedObject>(type: T.Type, context: NamedObjectContext = .Main) -> QuerySet<T> {
+  public func query<T: NSManagedObject>(type: T.Type, context: NamedObjectContext = .Main) -> QuerySet<T> {
     return namedContext(context).query(type)
   }
 
   /// Creates a data manager for the given type.
-  func manager<T: NSManagedObject>(type: T.Type, context: NamedObjectContext = .Main) -> DataManager<T> {
+  public func manager<T: NSManagedObject>(type: T.Type, context: NamedObjectContext = .Main) -> DataManager<T> {
     return namedContext(context).manager(type)
   }
 
