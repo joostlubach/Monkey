@@ -50,31 +50,27 @@ public class ManagedObjectContext: NSObject {
     return T(entity: entity, insertIntoManagedObjectContext: underlyingContext)
   }
 
-  public typealias ContextBlock = (ManagedObjectContext) -> Void
-
-  /// Performs a block on this context.
-  public func performBlock(block: ContextBlock) -> Future<Void> {
+  /// Performs a block on this context, passing this context.
+  public func performBlock(block: () -> Void) -> Future<Void> {
     var promise = Promise<Void>()
 
     underlyingContext.performBlock {
-      block(self)
+      block()
       promise.success()
     }
 
     return promise.future
   }
 
-  /// Performs a block on this context.
-  public func performBlockAndWait(block: ContextBlock) {
-    underlyingContext.performBlockAndWait {
-      block(self)
-    }
+  /// Performs a block on this context, passing this context and waits until execution is finished.
+  public func performBlockAndWait(block: () -> Void) {
+    underlyingContext.performBlockAndWait(block)
   }
 
   /// Saves data asynchronously using a block.
   ///
   /// :returns: A future used to obtain a result status with.
-  public func save(block: ContextBlock) -> Future<Void> {
+  public func save(block: (ManagedObjectContext) -> Void) -> Future<Void> {
     var error: NSError? = nil
     var promise = Promise<Void>()
 
@@ -92,7 +88,7 @@ public class ManagedObjectContext: NSObject {
   }
 
   /// Saves data synchronously.
-  public func saveAndWait(error: NSErrorPointer = nil, block: ContextBlock) -> Bool {
+  public func saveAndWait(error: NSErrorPointer = nil, block: (ManagedObjectContext) -> Void) -> Bool {
     var returnValue = false
     underlyingContext.performBlockAndWait {
       block(self)
@@ -126,6 +122,12 @@ public class ManagedObjectContext: NSObject {
 
   public func deleteObject(object: NSManagedObject) {
     underlyingContext.deleteObject(object)
+  }
+
+  /// Gets a copy of the given managed object in the current context.
+  public func get<T: NSManagedObject>(object: T) -> T {
+    let objectID = object.objectID
+    return underlyingContext.objectWithID(objectID) as! T
   }
 
   // MARK: - Synchronization

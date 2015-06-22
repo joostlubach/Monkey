@@ -18,6 +18,8 @@
 		C80878211B1F4B9B00621E25 /* DataMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80878201B1F4B9B00621E25 /* DataMapper.swift */; };
 		C80878231B1F4D2800621E25 /* StringUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80878221B1F4D2800621E25 /* StringUtil.swift */; };
 		C80878251B1F4F5E00621E25 /* Info-Tests.plist in Resources */ = {isa = PBXBuildFile; fileRef = C80878241B1F4F5E00621E25 /* Info-Tests.plist */; };
+		C8440EA51B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8440EA41B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift */; };
+		C888896C1B32D72700853895 /* AppleCore..swift in Sources */ = {isa = PBXBuildFile; fileRef = C888896B1B32D72700853895 /* AppleCore..swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		C80878201B1F4B9B00621E25 /* DataMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataMapper.swift; sourceTree = "<group>"; };
 		C80878221B1F4D2800621E25 /* StringUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtil.swift; sourceTree = "<group>"; };
 		C80878241B1F4F5E00621E25 /* Info-Tests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Tests.plist"; sourceTree = "<group>"; };
+		C8440EA41B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+AppleCore.swift"; sourceTree = "<group>"; };
+		C888896B1B32D72700853895 /* AppleCore..swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleCore..swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,11 +97,13 @@
 			isa = PBXGroup;
 			children = (
 				C80877F91B1F48DD00621E25 /* AppleCore.h */,
+				C888896B1B32D72700853895 /* AppleCore..swift */,
 				C80878101B1F490100621E25 /* CoreDataStack.swift */,
 				C808781C1B1F4B5B00621E25 /* ManagedObjectContext.swift */,
 				C808781E1B1F4B8400621E25 /* DataManager.swift */,
 				C80878201B1F4B9B00621E25 /* DataMapper.swift */,
 				C80878221B1F4D2800621E25 /* StringUtil.swift */,
+				C8440EA41B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -237,8 +243,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C808781D1B1F4B5B00621E25 /* ManagedObjectContext.swift in Sources */,
+				C8440EA51B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift in Sources */,
 				C808781F1B1F4B8400621E25 /* DataManager.swift in Sources */,
 				C80878231B1F4D2800621E25 /* StringUtil.swift in Sources */,
+				C888896C1B32D72700853895 /* AppleCore..swift in Sources */,
 				C80878211B1F4B9B00621E25 /* DataMapper.swift in Sources */,
 				C80878111B1F490100621E25 /* CoreDataStack.swift in Sources */,
 			);
@@ -364,6 +372,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -382,6 +391,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};

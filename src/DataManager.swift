@@ -1,11 +1,3 @@
-//
-//  DataManager.swift
-//  Virate
-//
-//  Created by Joost Lubach on 31/10/14.
-//  Copyright (c) 2014 Joost Lubach. All rights reserved.
-//
-
 import CoreData
 import BrightFutures
 import QueryKit
@@ -50,22 +42,51 @@ public class DataManager<T: NSManagedObject> {
     return T(entity: entity, insertIntoManagedObjectContext: context.underlyingContext)
   }
 
+  public func deleteAll() -> Int {
+    let querySet = QuerySet<NSManagedObject>(context.underlyingContext, entityName)
+    return querySet.delete().count
+  }
+
+  // MARK: JSON
+
+
   /// Finds or inserts an object from the given JSON. The id is taken from the "id" property.
   public func findOrInsertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let id: AnyObject = DataMapper<T>(entityName: entityName, context: context).getIDFromJSON(json)
-    return findWithID(id) ?? insertWithJSON(json, extra: extra)
+    AppleCore.traceID("\(id)")
+
+    var object = findWithID(id)
+
+    if object == nil {
+      object = insertWithJSON(json, extra: extra)
+    } else {
+      AppleCore.traceExisting()
+    }
+
+    return object!
   }
 
   /// Inserts or updates an object from the given JSON. The id is taken from the "id" property.
   public func insertOrUpdateWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
     let id: AnyObject = DataMapper<T>(entityName: entityName, context: context).getIDFromJSON(json)
-    let object = findWithID(id) ?? insert()
+    AppleCore.traceID("\(id)")
 
-    return update(object, withJSON: json, extra: extra)
+    var object = findWithID(id)
+
+    if object == nil {
+      AppleCore.traceInsert()
+      object = insert()
+    } else {
+      AppleCore.traceUpdate()
+    }
+
+    return update(object!, withJSON: json, extra: extra)
   }
 
   /// Inserts an object from the given JSON.
   public func insertWithJSON(json: JSON, extra: [String: AnyObject?] = [:]) -> T {
+    AppleCore.traceInsert()
+
     let object = insert()
     return update(object, withJSON: json, extra: extra)
   }
@@ -92,6 +113,8 @@ public class DataManager<T: NSManagedObject> {
       var order = orderOffset
 
       for node in array {
+        AppleCore.traceEntity(entityName)
+
         if mapper.IDMapping == nil {
           object = insertWithJSON(node, extra: extra)
         } else if updateExisting {
@@ -109,13 +132,8 @@ public class DataManager<T: NSManagedObject> {
     } else {
       assertionFailure("Expected array")
     }
-
+    
     return set
   }
 
-  public func deleteAll() -> Int {
-    let querySet = QuerySet<NSManagedObject>(context.underlyingContext, entityName)
-    return querySet.delete().count
-  }
-  
 }

@@ -3,12 +3,13 @@ import SwiftyJSON
 
 private typealias MappingEntry = (id: StandardMapping?, orderKey: String?, attributes: [Mapping])
 private var Mappings:  [String: MappingEntry] = [:]
+//private var ConfigurationTokens: [String: dispatch_once_t] = [:]
 
 private func DefaultIDMapping() -> StandardMapping {
   return IntegerMapping("id")
 }
 
-protocol Mapping {
+public protocol Mapping {
 
   func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext)
 
@@ -16,15 +17,21 @@ protocol Mapping {
 
 public class CustomMapping<T: NSManagedObject>: Mapping {
 
-  typealias Handler = (T, json: JSON, context: ManagedObjectContext) -> ()
+  typealias Handler = (T, json: JSON, context: ManagedObjectContext) -> Void
 
-  init(_ handler: Handler) {
+  public init(_ handler: Handler) {
     self.handler = handler
+  }
+  public init(_ handler: (T, json: JSON) -> Void) {
+    self.handler = { target, json, context in handler(target, json: json) }
+  }
+  public init(_ method: (T) -> (JSON) -> Void) {
+    self.handler = { target, json, context in method(target)(json) }
   }
 
   let handler: Handler
 
-  func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
+  public func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
     handler(object as! T, json: json, context: context)
   }
 
@@ -32,11 +39,11 @@ public class CustomMapping<T: NSManagedObject>: Mapping {
 
 public class StandardMapping: Mapping {
 
-  convenience init(_ attribute: String) {
+  public convenience init(_ attribute: String) {
     self.init(attribute, from: StringUtil.underscore(attribute))
   }
 
-  init(_ attribute: String, from jsonKey: String) {
+  public init(_ attribute: String, from jsonKey: String) {
     self.attribute = attribute
     self.jsonKey = jsonKey
   }
@@ -44,13 +51,20 @@ public class StandardMapping: Mapping {
   let jsonKey: String
   let attribute: String
 
+  var skipIfMissing = true
+
   func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     return nil
   }
 
-  func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
+  public func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
     let value: AnyObject? = getValueFromJSON(json, context: context)
-    object.setValue(value, forKey: attribute)
+
+    if let val: AnyObject = value {
+      object.setValue(value, forKey: attribute)
+    } else if !skipIfMissing {
+      object.setValue(nil, forKey: attribute)
+    }
   }
 
 }
@@ -60,7 +74,7 @@ public class NumberMapping: StandardMapping {
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     if let number = json[jsonKey].number {
       return getNumber(number)
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected number")
@@ -95,7 +109,7 @@ public class StringMapping: StandardMapping {
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     if let string = json[jsonKey].string {
       return string
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected string")
@@ -105,21 +119,63 @@ public class StringMapping: StandardMapping {
 
 }
 
+public protocol CaseMappable {
+  typealias MappedType
+
+  var mappedValue: MappedType { get }
+}
+
+public class CaseMapping<T: CaseMappable where T.MappedType: AnyObject>: StringMapping {
+
+  public convenience init(_ attribute: String, cases: [String: T], defaultCase: T? = nil) {
+    self.init(attribute, from: StringUtil.underscore(attribute), cases: cases, defaultCase: defaultCase)
+  }
+
+  public init(_ attribute: String, from jsonKey: String, cases: [String: T], defaultCase: T? = nil) {
+    self.cases = cases
+    self.defaultCase = defaultCase
+    super.init(attribute, from: jsonKey)
+  }
+
+  let cases: [String: T]
+  let defaultCase: T?
+
+  override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
+    let stringOrNil = super.getValueFromJSON(json, context: context) as? String
+
+    if let string = stringOrNil, let value = cases[string] {
+      return value.mappedValue
+    } else {
+      return defaultCase?.mappedValue
+    }
+  }
+
+}
+
 public class DateMapping: StandardMapping {
 
-  var dateFormat: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+  var dateFormats = [
+    "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+    "yyyy-MM-dd'T'HH:mm:ssZ"
+  ]
   var locale: NSLocale   = NSLocale(localeIdentifier: "en_US_POSIX")
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     if let string = json[jsonKey].string {
       let formatter        = NSDateFormatter()
-      formatter.dateFormat = dateFormat
       formatter.locale     = locale
-      return formatter.dateFromString(string)
+
+      for format in dateFormats {
+        formatter.dateFormat = format
+        if let date = formatter.dateFromString(string) {
+          return date
+        }
+      }
+      return nil
     } else if let number = json[jsonKey].number {
       let timestamp = number.doubleValue
       return NSDate(timeIntervalSince1970: timestamp)
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected string or number")
@@ -166,7 +222,7 @@ public class ToOneRelationshipMapping<T: NSManagedObject>: StandardMapping {
       } else {
         return manager.findOrInsertWithJSON(json[jsonKey])
       }
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON dictionary")
@@ -178,11 +234,11 @@ public class ToOneRelationshipMapping<T: NSManagedObject>: StandardMapping {
 
 public class ToManyRelationshipMapping<T: NSManagedObject>: StandardMapping {
 
-  convenience init(_ attribute: String, ordered: Bool = false, updateExisting: Bool = true) {
+  public convenience init(_ attribute: String, ordered: Bool = false, updateExisting: Bool = true) {
     self.init(attribute, from: StringUtil.underscore(attribute), ordered: ordered, updateExisting: updateExisting)
   }
 
-  init(_ attribute: String, from jsonKey: String, ordered: Bool = false, updateExisting: Bool = true) {
+  public init(_ attribute: String, from jsonKey: String, ordered: Bool = false, updateExisting: Bool = true) {
     self.ordered = ordered
     self.updateExisting = updateExisting
     super.init(attribute, from: jsonKey)
@@ -195,7 +251,7 @@ public class ToManyRelationshipMapping<T: NSManagedObject>: StandardMapping {
     if json[jsonKey].type == .Array {
       let manager = DataManager<T>(context: context)
       return manager.insertSetWithJSON(json[jsonKey], updateExisting: updateExisting)
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON array")
@@ -203,13 +259,15 @@ public class ToManyRelationshipMapping<T: NSManagedObject>: StandardMapping {
     }
   }
 
-  override func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
+  override public func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
     if let array = getValueFromJSON(json, context: context) as? [T] {
       if ordered {
         object.setValue(NSOrderedSet(array: array), forKey: attribute)
       } else {
         object.setValue(NSSet(array: array), forKey: attribute)
       }
+    } else if !skipIfMissing {
+      object.setValue(NSSet(), forKey: attribute)
     }
   }
 
@@ -217,11 +275,11 @@ public class ToManyRelationshipMapping<T: NSManagedObject>: StandardMapping {
 
 public class RelatedObjectIDMapping<T: NSManagedObject>: StandardMapping {
 
-  init(_ attribute: String) {
+  public init(_ attribute: String) {
     super.init(attribute, from: RelatedObjectIDMapping<T>.defaultJSONKey(attribute))
   }
 
-  override init(_ attribute: String, from jsonKey: String) {
+  public override init(_ attribute: String, from jsonKey: String) {
     super.init(attribute, from: jsonKey)
   }
 
@@ -239,7 +297,7 @@ public class RelatedObjectIDMapping<T: NSManagedObject>: StandardMapping {
       object = manager.findWithID(number.integerValue)
     } else if let string = json[jsonKey].string {
       object = manager.findWithID(string)
-    } else if json[jsonKey].isEmpty {
+    } else if json[jsonKey].type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON array")
@@ -266,7 +324,7 @@ public class DataMapper<T: NSManagedObject> {
     self.context    = context.managedObjectContext
   }
 
-  let entityName: String
+  public let entityName: String
   let context: ManagedObjectContext
 
   func mapJSON(json: JSON, toObject object: NSManagedObject) {
@@ -323,7 +381,7 @@ public class DataMapper<T: NSManagedObject> {
     }
   }
 
-  class func addMapping<TMapping: Mapping>(mapping: TMapping) {
+  public class func addMapping<TMapping: Mapping>(mapping: TMapping) {
     let entityName = NSStringFromClass(T)
 
     if Mappings[entityName] == nil {
@@ -333,7 +391,7 @@ public class DataMapper<T: NSManagedObject> {
     Mappings[entityName]!.attributes.append(mapping)
   }
 
-  class func mapIDWith(mapping: StandardMapping?) {
+  public class func mapIDWith(mapping: StandardMapping?) {
     let entityName = NSStringFromClass(T)
 
     if Mappings[entityName] == nil {
@@ -343,7 +401,7 @@ public class DataMapper<T: NSManagedObject> {
     Mappings[entityName]!.id = mapping
   }
 
-  class func mapOrderTo(key: String?) {
+  public class func mapOrderTo(key: String?) {
     let entityName = NSStringFromClass(T)
 
     if Mappings[entityName] == nil {

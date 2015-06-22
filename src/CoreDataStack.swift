@@ -43,7 +43,7 @@ public class CoreDataStack {
   let persistentStoreCoordinator: NSPersistentStoreCoordinator
 
   /// The managed object context associated with the main thread.
-  lazy var mainContext: ManagedObjectContext = {
+  public lazy var mainContext: ManagedObjectContext = {
     let context = ManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
     context.underlyingContext.persistentStoreCoordinator = self.persistentStoreCoordinator
     return context
@@ -78,18 +78,18 @@ public class CoreDataStack {
   }
 
   /// Saves changes asynchronously using the given block on the given context.
-  public func save(#context: NamedObjectContext, block: ManagedObjectContext.ContextBlock) -> Future<Void> {
+  public func save(#context: NamedObjectContext, block: (ManagedObjectContext) -> Void) -> Future<Void> {
     return namedContext(context).save(block)
   }
-  public func save(block: ManagedObjectContext.ContextBlock) -> Future<Void> {
+  public func save(block: (ManagedObjectContext) -> Void) -> Future<Void> {
     return save(context: .Background, block: block)
   }
 
   /// Saves changes synchronously using the given block on the given context.
-  public func saveAndWait(#context: NamedObjectContext, _ error: NSErrorPointer = nil, block: ManagedObjectContext.ContextBlock) -> Bool {
+  public func saveAndWait(#context: NamedObjectContext, _ error: NSErrorPointer = nil, block: (ManagedObjectContext) -> Void) -> Bool {
     return namedContext(context).saveAndWait(error: error, block: block)
   }
-  public func saveAndWait(block: ManagedObjectContext.ContextBlock) -> Bool {
+  public func saveAndWait(block: (ManagedObjectContext) -> Void) -> Bool {
     return saveAndWait(context: .Background, block: block)
   }
 
@@ -118,14 +118,14 @@ public class CoreDataStack {
   // MARK: - Utility
 
   /// Loads the managed object model for the given name.
-  class func managedObjectModelForName(name: String) -> NSManagedObjectModel {
+  public static func managedObjectModelForName(name: String) -> NSManagedObjectModel {
     // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
     let modelURL = NSBundle.mainBundle().URLForResource(name, withExtension: "momd")!
     return NSManagedObjectModel(contentsOfURL: modelURL)!
   }
 
   /// Determines a default store URL for a store with the given name.
-  class func defaultStoreURLWithName(name: String) -> NSURL {
+  public static func defaultStoreURLWithName(name: String) -> NSURL {
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
     let applicationDocumentsDirectory = urls[urls.count-1] as! NSURL
 
@@ -134,7 +134,7 @@ public class CoreDataStack {
 
   /// Tries to create a persistent store coordinator at the given URL, setting it up using the given
   /// managed object model.
-  class func createPersistentStoreCoordinator(#storeURL: NSURL, usingModel model: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+  public static func createPersistentStoreCoordinator(#storeURL: NSURL, usingModel model: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
     var error: NSError? = nil
 
     let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
