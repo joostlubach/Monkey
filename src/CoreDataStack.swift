@@ -47,7 +47,7 @@ public class CoreDataStack {
     let context = ManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
     context.underlyingContext.persistentStoreCoordinator = self.persistentStoreCoordinator
     return context
-    }()
+  }()
 
   /// Creates a new background context.
   ///
