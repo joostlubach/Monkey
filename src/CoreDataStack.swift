@@ -79,10 +79,22 @@ public class CoreDataStack {
 
   /// Saves changes asynchronously using the given block on the given context.
   public func save(#context: NamedObjectContext, block: (ManagedObjectContext) -> Void) -> Future<Void> {
+    return saveWithError { context, _ in block(context) }
+  }
+
+  /// Saves changes asynchronously using the given block on the given context.
+  ///
+  /// - parameter block: A block to execute. Set an error in the given pointer to make the future fail.
+  public func saveWithError(#context: NamedObjectContext, block: (ManagedObjectContext, NSErrorPointer) -> Void) -> Future<Void> {
     return namedContext(context).save(block)
   }
+
   public func save(block: (ManagedObjectContext) -> Void) -> Future<Void> {
     return save(context: .Background, block: block)
+  }
+
+  public func saveWithError(block: (ManagedObjectContext, NSErrorPointer) -> Void) -> Future<Void> {
+    return saveWithError(context: .Background, block: block)
   }
 
   /// Saves changes synchronously using the given block on the given context.

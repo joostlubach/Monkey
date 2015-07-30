@@ -70,17 +70,21 @@ public class ManagedObjectContext: NSObject {
   /// Saves data asynchronously using a block.
   ///
   /// :returns: A future used to obtain a result status with.
-  public func save(block: (ManagedObjectContext) -> Void) -> Future<Void> {
+  public func save(block: (ManagedObjectContext, NSErrorPointer) -> Void) -> Future<Void> {
     var error: NSError? = nil
     var promise = Promise<Void>()
 
     underlyingContext.performBlock {
-      block(self)
+      block(self, &error)
 
-      if self.saveChanges(error: &error) {
-        promise.success()
+      if error == nil {
+        self.saveChanges(error: &error)
+      }
+
+      if let err = error {
+        promise.failure(err)
       } else {
-        promise.failure(error!)
+        promise.success()
       }
     }
 
