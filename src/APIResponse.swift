@@ -11,7 +11,7 @@ public class APIResponse {
     case ServerError
   }
 
-  init(client: APIClient, httpResponse: NSHTTPURLResponse?, data: NSData?) {
+  init(client: APIClient?, httpResponse: NSHTTPURLResponse?, data: NSData?) {
     self.client = client
     self.httpResponse = httpResponse
     self.data = data
