@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C826D6EE1B68FC4000C9B53D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C826D6EB1B68FC4000C9B53D /* Alamofire.framework */; };
-		C826D6F41B68FD7300C9B53D /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C826D6F31B68FD7300C9B53D /* BrightFutures.framework */; };
-		C826D6F61B68FD8200C9B53D /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C826D6F51B68FD8200C9B53D /* SwiftyJSON.framework */; };
 		C82A7E2C1B317DD500E5513E /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82A7E2B1B317DD500E5513E /* Queue.swift */; };
 		C82A7E301B31A3BF00E5513E /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82A7E2F1B31A3BF00E5513E /* APIResponse.swift */; };
 		C85E27151B29FCB80008D982 /* Monkey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85E27091B29FCB80008D982 /* Monkey.framework */; };
@@ -21,6 +18,9 @@
 		C85E274A1B29FDD80008D982 /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85E27451B29FDD80008D982 /* APICall.swift */; };
 		C85E274B1B29FDD80008D982 /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85E27461B29FDD80008D982 /* APISession.swift */; };
 		C88290C31B2AE00B0010E650 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C88290C21B2AE00B0010E650 /* Trace.swift */; };
+		C8E632881B78EA1500AB7B9B /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E632851B78EA1500AB7B9B /* Alamofire.framework */; };
+		C8E632891B78EA1500AB7B9B /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E632861B78EA1500AB7B9B /* BrightFutures.framework */; };
+		C8E6328A1B78EA1500AB7B9B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8E632871B78EA1500AB7B9B /* SwiftyJSON.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +34,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C826D6EB1B68FC4000C9B53D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C826D6F31B68FD7300C9B53D /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BrightFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C826D6F51B68FD8200C9B53D /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C82A7E2B1B317DD500E5513E /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = src/Queue.swift; sourceTree = SOURCE_ROOT; };
 		C82A7E2F1B31A3BF00E5513E /* APIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APIResponse.swift; path = src/APIResponse.swift; sourceTree = SOURCE_ROOT; };
 		C85E27091B29FCB80008D982 /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +48,9 @@
 		C85E27451B29FDD80008D982 /* APICall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APICall.swift; path = src/APICall.swift; sourceTree = SOURCE_ROOT; };
 		C85E27461B29FDD80008D982 /* APISession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APISession.swift; path = src/APISession.swift; sourceTree = SOURCE_ROOT; };
 		C88290C21B2AE00B0010E650 /* Trace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Trace.swift; path = src/Trace.swift; sourceTree = SOURCE_ROOT; };
+		C8E632851B78EA1500AB7B9B /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		C8E632861B78EA1500AB7B9B /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = ../Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
+		C8E632871B78EA1500AB7B9B /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = ../Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C826D6EE1B68FC4000C9B53D /* Alamofire.framework in Frameworks */,
-				C826D6F41B68FD7300C9B53D /* BrightFutures.framework in Frameworks */,
-				C826D6F61B68FD8200C9B53D /* SwiftyJSON.framework in Frameworks */,
+				C8E632881B78EA1500AB7B9B /* Alamofire.framework in Frameworks */,
+				C8E632891B78EA1500AB7B9B /* BrightFutures.framework in Frameworks */,
+				C8E6328A1B78EA1500AB7B9B /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,9 +125,9 @@
 		C88290C61B2AE3E10010E650 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C826D6F51B68FD8200C9B53D /* SwiftyJSON.framework */,
-				C826D6F31B68FD7300C9B53D /* BrightFutures.framework */,
-				C826D6EB1B68FC4000C9B53D /* Alamofire.framework */,
+				C8E632851B78EA1500AB7B9B /* Alamofire.framework */,
+				C8E632861B78EA1500AB7B9B /* BrightFutures.framework */,
+				C8E632871B78EA1500AB7B9B /* SwiftyJSON.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -367,6 +367,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/joost/Work/Projects/Dloky/Source/Carthage/Build/iOS,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -385,6 +389,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/joost/Work/Projects/Dloky/Source/Carthage/Build/iOS,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

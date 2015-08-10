@@ -88,17 +88,17 @@ public class APIClient {
   This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
   is logged, but not displayed to the user.
   */
-  public var authenticationHandler: ((APIClient) -> Future<APISession>)?
+  public var authenticationHandler: ((APIClient) -> Future<APISession, NSError>)?
 
   public var authenticated: Bool {
     return session != nil && !(session!.expired)
   }
 
   private var waitingForAuthentication = [APICall]()
-  private var authenticationFuture: Future<Void>?
+  private var authenticationFuture: Future<Void, NSError>?
 
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
-  public func ensureAuthenticated() -> Future<Void> {
+  public func ensureAuthenticated() -> Future<Void, NSError> {
     if let session = self.session where !session.expired {
       return Future.succeeded()
     } else {
@@ -107,7 +107,7 @@ public class APIClient {
   }
 
   /// Authenticates this client using the authentication handler.
-  public func authenticate() -> Future<Void> {
+  public func authenticate() -> Future<Void, NSError> {
     if let block = authenticationHandler {
       return block(self).map { session in
         self.session = session
@@ -116,12 +116,12 @@ public class APIClient {
     } else {
       // Pretend to have been authenticated.
       self.session = nil
-      return Future<Void>.succeeded()
+      return Future.succeeded()
     }
   }
 
   /// Authenticates the client and retries the given operation. The operation is stalled while authentication is performed.
-  final func authenticateAndRetry(operation: APICall) -> Future<Void> {
+  final func authenticateAndRetry(operation: APICall) -> Future<Void, NSError> {
     // Cancel this operation.
     operation.cancel()
 

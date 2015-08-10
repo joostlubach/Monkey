@@ -50,7 +50,7 @@ public class APICall: Operation {
 
   private var responseHandlers = [ResponseHandler]()
 
-  private let promise = Promise<APIResponse>()
+  private let promise = Promise<APIResponse, NSError>()
 
   /// Adds a response handler, which is called upon any result (success or failure).
   public func response(handler: (APIResponse) -> Void) {
@@ -89,18 +89,26 @@ public class APICall: Operation {
     }
   }
 
-  public var future: Future<APIResponse> {
+  public var future: Future<APIResponse, NSError> {
     return promise.future
   }
 
-  public var jsonFuture: Future<JSON> {
-    return promise.future.map { response in
+  public var jsonFuture: Future<JSON, NSError> {
+    let promise = Promise<JSON, NSError>()
+
+    self.promise.future.onSuccess { response in
       if let json = response.json {
-        return json
+        promise.success(json)
       } else {
-        fatalError("No JSON read, perhaps malformed?")
+        let error = NSError(domain: Monkey.ErrorDomain, code: Monkey.ErrorCodes.InvalidJSON.rawValue, userInfo: nil)
+        promise.failure(error)
       }
     }
+    promise.future.onFailure { error in
+      promise.failure(error)
+    }
+
+    return promise.future
   }
 
   // MARK: Authentication
@@ -135,7 +143,7 @@ public class APICall: Operation {
 
     alamofireRequest!.response { [weak self] _, httpResponse, data, error in
       if let operation = self {
-        operation.handleResponse(httpResponse, data: data as! NSData?, error: error)
+        operation.handleResponse(httpResponse, data: data, error: error)
       }
     }
 

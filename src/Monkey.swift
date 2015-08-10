@@ -7,6 +7,7 @@ public struct Monkey {
 
   public enum ErrorCodes: Int {
     case HTTPError = 10
+    case InvalidJSON = 100
   }
 
   public enum TraceLevel: Int {
