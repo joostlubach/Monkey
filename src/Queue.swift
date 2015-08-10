@@ -133,7 +133,9 @@ class OperationQueue {
       println("Monkey.Queue: operation already finished")
     default:
       running.append(operation)
-      operation.completion = { [weak self] in self?.operationComplete(operation) }
+      operation.completion = { [weak self, unowned operation] in
+        self?.operationComplete(operation)
+      }
       operation.start()
     }
 
