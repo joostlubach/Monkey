@@ -74,10 +74,10 @@ public class APICall: Operation {
   }
   
   /// Adds a response handler, which is called upon error.
-  public func responseError(handler: (APIResponse) -> Void) {
+  public func responseError(handler: (APIResponse, NSError) -> Void) {
     response { response in
       if response.type != .Success {
-        handler(response)
+        handler(response, response.error!)
       }
     }
   }

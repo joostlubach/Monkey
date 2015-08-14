@@ -81,15 +81,14 @@ public class APIClient {
 
   // MARK: Authentication
 
-  /**
-  A handler for authentication. This is called either when `authenticate()` is called (or when `ensureAuthenticated()` is called
-  and the client does not have a session, or when any API (authenticated) request encounters a 401.
-
-  This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
-  is logged, but not displayed to the user.
-  */
+  /// A handler for authentication. This is called either when `authenticate()` is called (or when `ensureAuthenticated()` is called
+  /// and the client does not have a session, or when any API (authenticated) request encounters a 401.
+  ///
+  /// This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
+  /// is logged, but not displayed to the user.
   public var authenticationHandler: ((APIClient) -> Future<APISession, NSError>)?
 
+  /// Determines whether the client is currently authenticated.
   public var authenticated: Bool {
     return session != nil && !(session!.expired)
   }
