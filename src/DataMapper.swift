@@ -53,6 +53,22 @@ public class StandardMapping: Mapping {
 
   var skipIfMissing = true
 
+  /// Gets the JSON that contains this attribute.
+  func getAttributeJSON(json: JSON) -> JSON {
+    let parts = split(jsonKey) { $0 == "." }
+
+    var current = json
+    for part in parts {
+      if current.type == .Null {
+        break
+      } else {
+        current = current[part]
+      }
+    }
+
+    return current
+  }
+
   func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     return nil
   }
@@ -72,9 +88,11 @@ public class StandardMapping: Mapping {
 public class NumberMapping: StandardMapping {
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
-    if let number = json[jsonKey].number {
+    let attributeJSON = getAttributeJSON(json)
+
+    if let number = attributeJSON.number {
       return getNumber(number)
-    } else if json[jsonKey].type == .Null {
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected number")
@@ -107,9 +125,11 @@ public class BooleanMapping: NumberMapping {
 public class StringMapping: StandardMapping {
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
-    if let string = json[jsonKey].string {
+    let attributeJSON = getAttributeJSON(json)
+
+    if let string = attributeJSON.string {
       return string
-    } else if json[jsonKey].type == .Null {
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected string")
@@ -161,7 +181,9 @@ public class DateMapping: StandardMapping {
   var locale: NSLocale   = NSLocale(localeIdentifier: "en_US_POSIX")
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
-    if let string = json[jsonKey].string {
+    let attributeJSON = getAttributeJSON(json)
+
+    if let string = attributeJSON.string {
       let formatter        = NSDateFormatter()
       formatter.locale     = locale
 
@@ -172,10 +194,10 @@ public class DateMapping: StandardMapping {
         }
       }
       return nil
-    } else if let number = json[jsonKey].number {
+    } else if let number = attributeJSON.number {
       let timestamp = number.doubleValue
       return NSDate(timeIntervalSince1970: timestamp)
-    } else if json[jsonKey].type == .Null {
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected string or number")
@@ -215,14 +237,16 @@ public class ToOneRelationshipMapping<T: NSManagedObject>: StandardMapping {
   let updateExisting: Bool
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
-    if json[jsonKey].type == .Dictionary {
+    let attributeJSON = getAttributeJSON(json)
+
+    if attributeJSON.type == .Dictionary {
       let manager = DataManager<T>(context: context)
       if updateExisting {
-        return manager.insertOrUpdateWithJSON(json[jsonKey])
+        return manager.insertOrUpdateWithJSON(attributeJSON)
       } else {
-        return manager.findOrInsertWithJSON(json[jsonKey])
+        return manager.findOrInsertWithJSON(attributeJSON)
       }
-    } else if json[jsonKey].type == .Null {
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON dictionary")
@@ -248,10 +272,12 @@ public class ToManyRelationshipMapping<T: NSManagedObject>: StandardMapping {
   let updateExisting: Bool
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
-    if json[jsonKey].type == .Array {
+    let attributeJSON = getAttributeJSON(json)
+
+    if attributeJSON.type == .Array {
       let manager = DataManager<T>(context: context)
-      return manager.insertSetWithJSON(json[jsonKey], updateExisting: updateExisting)
-    } else if json[jsonKey].type == .Null {
+      return manager.insertSetWithJSON(attributeJSON, updateExisting: updateExisting)
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON array")
@@ -291,13 +317,15 @@ public class RelatedObjectIDMapping<T: NSManagedObject>: StandardMapping {
     let entityName = NSStringFromClass(T)
     let manager = DataManager<NSManagedObject>(entityName: entityName, context: context)
 
+    let attributeJSON = getAttributeJSON(json)
+
     var object: NSManagedObject!
 
-    if let number = json[jsonKey].number {
+    if let number = attributeJSON.number {
       object = manager.findWithID(number.integerValue)
-    } else if let string = json[jsonKey].string {
+    } else if let string = attributeJSON.string {
       object = manager.findWithID(string)
-    } else if json[jsonKey].type == .Null {
+    } else if attributeJSON.type == .Null {
       return nil
     } else {
       assertionFailure("Key `\(jsonKey)`: expected JSON array")
@@ -306,7 +334,7 @@ public class RelatedObjectIDMapping<T: NSManagedObject>: StandardMapping {
     if object != nil {
       return object
     } else {
-      assertionFailure("Key `\(jsonKey)`: \(entityName) with ID \(json[jsonKey]) not found")
+      assertionFailure("Key `\(jsonKey)`: \(entityName) with ID \(attributeJSON.rawString()!) not found")
       return nil
     }
   }
