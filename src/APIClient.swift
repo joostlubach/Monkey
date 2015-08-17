@@ -90,6 +90,10 @@ public class APIClient {
   */
   public var authenticationHandler: ((APIClient) -> Future<APISession>)?
 
+  public var authenticated: Bool {
+    return session != nil && !(session!.expired)
+  }
+
   private var waitingForAuthentication = [APICall]()
   private var authenticationFuture: Future<Void>?
 
