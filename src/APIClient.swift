@@ -40,9 +40,21 @@ public class APIClient {
       return _session
     }
     set {
+      if _session === newValue {
+        return
+      }
+
       _session = newValue
+
       if storesSession {
         Monkey.writeSessionToUserDefaults(_session)
+      }
+
+      let notificationCenter = NSNotificationCenter.defaultCenter()
+      if _session != nil {
+        notificationCenter.postNotificationName(Monkey.APIClientDidAuthenticateNotification, object: self)
+      } else {
+        notificationCenter.postNotificationName(Monkey.APIClientDidUnauthenticateNotification, object: self)
       }
     }
   }
@@ -86,7 +98,9 @@ public class APIClient {
   ///
   /// This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
   /// is logged, but not displayed to the user.
-  public var authenticationHandler: ((APIClient) -> Future<APISession, NSError>)?
+  ///
+  /// In case any error occurs, you should handle this and return a successful future with a nil argument.
+  public var authenticationHandler: ((APIClient) -> Future<Void, NoError>)?
 
   /// Determines whether the client is currently authenticated.
   public var authenticated: Bool {
@@ -94,33 +108,32 @@ public class APIClient {
   }
 
   private var waitingForAuthentication = [APICall]()
-  private var authenticationFuture: Future<Void, NSError>?
+  private var authenticationFuture: Future<Void, NoError>?
 
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
-  public func ensureAuthenticated() -> Future<Void, NSError> {
+  public func ensureAuthenticated() -> Future<Bool, NoError> {
     if let session = self.session where !session.expired {
-      return Future.succeeded()
+      return Future.succeeded(true)
     } else {
       return authenticate()
     }
   }
 
   /// Authenticates this client using the authentication handler.
-  public func authenticate() -> Future<Void, NSError> {
+  public func authenticate() -> Future<Bool, NoError> {
     if let block = authenticationHandler {
-      return block(self).map { session in
-        self.session = session
-        return
+      return block(self).map {
+        return self.session != nil
       }
     } else {
       // Pretend to have been authenticated.
       self.session = nil
-      return Future.succeeded()
+      return Future.succeeded(false)
     }
   }
 
   /// Authenticates the client and retries the given operation. The operation is stalled while authentication is performed.
-  final func authenticateAndRetry(operation: APICall) -> Future<Void, NSError> {
+  final func authenticateAndRetry(operation: APICall) -> Future<Void, NoError> {
     // Cancel this operation.
     operation.cancel()
 
@@ -137,10 +150,13 @@ public class APIClient {
 
     // After the authentication succeeded, requeue all pending operations. If it fails, log the exact reason,
     // but just return false so that the operations waiting on authentication can all fail with a 401.
-    authenticationFuture = authFuture.map {
-      for call in self.waitingForAuthentication {
-        call.retry()
-        self.queue.enqueue(call)
+    authenticationFuture = authFuture.map { authenticated in
+      // If the user cancelled, or the authentication failed in some way, don't retry.
+      if authenticated {
+        for call in self.waitingForAuthentication {
+          call.retry()
+          self.queue.enqueue(call)
+        }
       }
       self.waitingForAuthentication = []
       self.authenticationFuture = nil

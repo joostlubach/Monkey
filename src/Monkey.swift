@@ -2,6 +2,9 @@ import Foundation
 
 public struct Monkey {
 
+  public static var APIClientDidAuthenticateNotification = "co.mosdev.Monkey.APIClientDidAuthenticate"
+  public static var APIClientDidUnauthenticateNotification = "co.mosdev.Monkey.APIClientDidAuthenticate"
+
   public static let ErrorDomain = "co.mosdev.Monkey-API"
   public static let SessionKey  = "co.mosdev.Monkey-APISession"
 
