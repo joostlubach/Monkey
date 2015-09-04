@@ -96,9 +96,6 @@ public class APIResponse {
   private func handleClientError() {
     type = .ClientError
     client?.traceError(status, message: jsonError(defaultError: "Client error"))
-
-    // A client error is a programming error in the app. Always abort.
-    abort()
   }
 
   private func handleServerError() {
