@@ -88,7 +88,7 @@ public class APIClient {
   This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
   is logged, but not displayed to the user.
   */
-  public var authenticationHandler: ((APIClient) -> Future<APISession>)?
+  public var authenticationHandler: ((APIClient) -> Future<Void>)?
 
   public var authenticated: Bool {
     return session != nil && !(session!.expired)
@@ -98,25 +98,24 @@ public class APIClient {
   private var authenticationFuture: Future<Void>?
 
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
-  public func ensureAuthenticated() -> Future<Void> {
+  public func ensureAuthenticated() -> Future<Bool> {
     if let session = self.session where !session.expired {
-      return Future.succeeded()
+      return Future.succeeded(true)
     } else {
       return authenticate()
     }
   }
 
   /// Authenticates this client using the authentication handler.
-  public func authenticate() -> Future<Void> {
+  public func authenticate() -> Future<Bool> {
     if let block = authenticationHandler {
-      return block(self).map { session in
-        self.session = session
-        return
+      return block(self).map {
+        return self.session != nil
       }
     } else {
       // Pretend to have been authenticated.
       self.session = nil
-      return Future<Void>.succeeded()
+      return Future.succeeded(false)
     }
   }
 
@@ -138,10 +137,16 @@ public class APIClient {
 
     // After the authentication succeeded, requeue all pending operations. If it fails, log the exact reason,
     // but just return false so that the operations waiting on authentication can all fail with a 401.
-    authenticationFuture = authFuture.map {
-      for call in self.waitingForAuthentication {
-        call.retry()
-        self.queue.enqueue(call)
+    authenticationFuture = authFuture.map { authenticated in
+      if authenticated {
+        for call in self.waitingForAuthentication {
+          call.retry()
+          self.queue.enqueue(call)
+        }
+      } else {
+        for call in self.waitingForAuthentication {
+          call.cancel()
+        }
       }
       self.waitingForAuthentication = []
       self.authenticationFuture = nil
