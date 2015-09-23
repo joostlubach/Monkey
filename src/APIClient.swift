@@ -157,6 +157,10 @@ public class APIClient {
           call.retry()
           self.queue.enqueue(call)
         }
+      } else {
+        for call in self.waitingForAuthentication {
+          call.cancel()
+        }
       }
       self.waitingForAuthentication = []
       self.authenticationFuture = nil
