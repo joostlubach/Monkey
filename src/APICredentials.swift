@@ -8,7 +8,7 @@ protocol APICredentials {
 
 class BearerTokenCredentials: APICredentials {
 
-  init(token: String) {
+  init?(token: String) {
     self.token = token
   }
 
@@ -24,9 +24,13 @@ class BearerTokenCredentials: APICredentials {
 
 class APIDeviceIdentifierCredentials: BearerTokenCredentials {
 
-  init() {
-    let identifier = UIDevice.currentDevice().identifierForVendor
-    super.init(token: identifier.UUIDString)
+  init?() {
+    if let identifier = UIDevice.currentDevice().identifierForVendor {
+      super.init(token: identifier.UUIDString)
+    } else {
+      super.init(token: "")
+      return nil
+    }
   }
 
 }

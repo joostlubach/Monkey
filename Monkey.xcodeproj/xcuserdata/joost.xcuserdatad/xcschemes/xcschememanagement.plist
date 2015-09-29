@@ -7,17 +7,22 @@
 		<key>Monkey.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>MonkeyUnitTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>C85E27081B29FCB70008D982</key>
+		<key>C85225E71BB5710F000589DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C85E27131B29FCB80008D982</key>
+		<key>C852260E1BB5716B000589DA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

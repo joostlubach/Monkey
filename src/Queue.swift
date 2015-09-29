@@ -51,7 +51,7 @@ class OperationQueue {
   /**
   Enqueues an operation.
   
-  :param: operation  The operation to enqueue.
+  - parameter operation:  The operation to enqueue.
   */
   func enqueue(operation: Operation) {
     queued.append(operation)
@@ -64,8 +64,8 @@ class OperationQueue {
   /**
   Dequeues an operation.
 
-  :param: operation  The operation to dequeue.
-  :returns:          Whether the operation was dequeued. If the operation was not queued in the first place,
+  - parameter operation:  The operation to dequeue.
+  - returns:          Whether the operation was dequeued. If the operation was not queued in the first place,
                      this value will be false.
   */
   func dequeue(operation: Operation) -> Bool {
@@ -122,15 +122,15 @@ class OperationQueue {
     }
 
     // Start
-    var operation = queued.removeAtIndex(0)
+    let operation = queued.removeAtIndex(0)
 
     switch operation.status {
     case .Running:
       // Output a warning, and don't run the operation again.
-      println("Monkey.Queue: operation already running")
+      print("Monkey.Queue: operation already running")
     case .Finished:
       // Output a warning, and don't run the operation again.
-      println("Monkey.Queue: operation already finished")
+      print("Monkey.Queue: operation already finished")
     default:
       running.append(operation)
       operation.completion = { [weak self, unowned operation] in

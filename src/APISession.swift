@@ -13,7 +13,7 @@ public class BearerTokenAPISession: NSObject, APISession, NSCoding {
     self.token = token
     self.expirationDate = expirationDate
   }
-  required convenience public init(coder: NSCoder) {
+  required convenience public init?(coder: NSCoder) {
     let token = coder.decodeObjectForKey("token") as! String
     let expirationDate = coder.decodeObjectForKey("expirationDate") as! NSDate?
 

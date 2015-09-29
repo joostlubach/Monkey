@@ -8,17 +8,17 @@ extension APIClient {
       return
     }
 
-    println("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
+    print("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
     if Monkey.traceLevel == .All {
       if let headers = request.allHTTPHeaderFields {
         for (header, value) in headers {
-          println("API      \(header): \(value)")
+          print("API      \(header): \(value)")
         }
       }
 
       if let body = request.HTTPBody {
         if let bodyString = NSString(data: body, encoding: NSUTF8StringEncoding) {
-          println("API      Body: \(bodyString)")
+          print("API      Body: \(bodyString)")
         }
       }
     }
@@ -29,10 +29,10 @@ extension APIClient {
       return
     }
 
-    println("API      Success (\(status))")
+    print("API      Success (\(status))")
 
     if Monkey.traceLevel == .All && json.type != .Null {
-      println("API      \(json.debugDescription)")
+      print("API      \(json.debugDescription)")
     }
   }
 
@@ -42,15 +42,15 @@ extension APIClient {
     }
 
     if let msg = message {
-      println("API      Error (\(status)) \(msg)")
+      print("API      Error (\(status)) \(msg)")
     } else {
-      println("API      Error (\(status))")
+      print("API      Error (\(status))")
     }
   }
 
   func trace(message: String?) {
     if let msg = message {
-      println("API      \(msg)")
+      print("API      \(msg)")
     }
   }
   

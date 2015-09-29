@@ -52,7 +52,7 @@ public class APIResponse {
     status = httpResponse?.statusCode ?? 0
 
     if let data = self.data {
-      if let jsonDict: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) {
+      if let jsonDict: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) {
         json = JSON(jsonDict)
       }
     }
@@ -79,7 +79,7 @@ public class APIResponse {
       client?.traceError(status, message: "Server error: \(error)")
     } else {
       type = .Success
-      client?.traceSuccess(status, json: json ?? JSON.nullJSON)
+      client?.traceSuccess(status, json: json ?? JSON.null)
     }
   }
 
@@ -104,13 +104,13 @@ public class APIResponse {
 
     if let data = self.data, let output = NSString(data: data, encoding: NSUTF8StringEncoding) {
       // Just dump the data to the log.
-      println("---- SERVER OUTPUT ----")
-      println(output)
-      println("---- END OF SERVER OUTPUT ----")
+      print("---- SERVER OUTPUT ----")
+      print(output)
+      print("---- END OF SERVER OUTPUT ----")
     }
   }
 
-  private func jsonError(#defaultError: String) -> String {
+  private func jsonError(defaultError defaultError: String) -> String {
     if let error = json?["error"].string {
       return error
     } else {

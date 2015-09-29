@@ -8,7 +8,7 @@ public class APIClient {
   /**
   Initializes the API client.
 
-  :param: baseURL   The base URL for the API. All paths will be appended to this URL.
+  - parameter baseURL:   The base URL for the API. All paths will be appended to this URL.
   */
   public init(baseURL: NSURL, storesSession: Bool = true) {
     self.baseURL = baseURL
@@ -68,19 +68,19 @@ public class APIClient {
   }
 
   public func post(path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
-    var call = buildCallWithMethod(.POST, path: path, json: json, authenticate: authenticate)
+    let call = buildCallWithMethod(.POST, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
   public func put(path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
-    var call = buildCallWithMethod(.PUT, path: path, json: json, authenticate: authenticate)
+    let call = buildCallWithMethod(.PUT, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
   public func delete(path: String, authenticate: Bool = true) -> APICall {
-    var call = buildCallWithMethod(.DELETE, path: path, authenticate: authenticate)
+    let call = buildCallWithMethod(.DELETE, path: path, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
@@ -113,7 +113,7 @@ public class APIClient {
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
   public func ensureAuthenticated() -> Future<Bool, NoError> {
     if let session = self.session where !session.expired {
-      return Future.succeeded(true)
+      return Future(value: true)
     } else {
       return authenticate()
     }
@@ -128,7 +128,7 @@ public class APIClient {
     } else {
       // Pretend to have been authenticated.
       self.session = nil
-      return Future.succeeded(false)
+      return Future(value: false)
     }
   }
 

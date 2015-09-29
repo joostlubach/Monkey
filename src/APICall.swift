@@ -13,8 +13,8 @@ public class APICall: Operation {
   /**
   Initializes an API request with a URL request.
 
-  :param: client      The API client making the request (stored as a weak reference).
-  :param: request     The URL request to make.
+  - parameter client:      The API client making the request (stored as a weak reference).
+  - parameter request:     The URL request to make.
   */
   init(client: APIClient, request: NSMutableURLRequest, authenticate: Bool = true) {
     self.client = client
@@ -135,6 +135,7 @@ public class APICall: Operation {
       return
     }
 
+
     // Authenticate the request if required.
     if authenticate { authenticateRequest() }
 
@@ -150,7 +151,7 @@ public class APICall: Operation {
 
     alamofireRequest!.response { [weak self] _, httpResponse, data, error in
       if let operation = self {
-        operation.handleResponse(httpResponse, data: data, error: error)
+        operation.handleResponse(httpResponse, data: data, error: error as? NSError)
       }
     }
 
