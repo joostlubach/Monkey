@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C85225E71BB5710F000589DA"
-               BuildableName = "Monkey-iOS.framework"
+               BuildableName = "Monkey.framework"
                BlueprintName = "Monkey-iOS"
                ReferencedContainer = "container:Monkey.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C85225E71BB5710F000589DA"
-            BuildableName = "Monkey-iOS.framework"
+            BuildableName = "Monkey.framework"
             BlueprintName = "Monkey-iOS"
             ReferencedContainer = "container:Monkey.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C85225E71BB5710F000589DA"
-            BuildableName = "Monkey-iOS.framework"
+            BuildableName = "Monkey.framework"
             BlueprintName = "Monkey-iOS"
             ReferencedContainer = "container:Monkey.xcodeproj">
          </BuildableReference>
