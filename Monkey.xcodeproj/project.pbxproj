@@ -27,12 +27,10 @@
 		C85226211BB57185000589DA /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
 		C85226221BB57185000589DA /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
 		C85226281BB571CF000589DA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226231BB571CF000589DA /* Alamofire.framework */; };
-		C85226291BB571CF000589DA /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226241BB571CF000589DA /* Box.framework */; };
 		C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; };
 		C852262B1BB571CF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; };
 		C852262C1BB571CF000589DA /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226271BB571CF000589DA /* SwiftyJSON.framework */; };
 		C852262E1BB572FF000589DA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226231BB571CF000589DA /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
-		C852262F1BB572FF000589DA /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226241BB571CF000589DA /* Box.framework */; settings = {ASSET_TAGS = (); }; };
 		C85226301BB572FF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; settings = {ASSET_TAGS = (); }; };
 		C85226311BB572FF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; settings = {ASSET_TAGS = (); }; };
 		C85226321BB572FF000589DA /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226271BB571CF000589DA /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
@@ -64,7 +62,6 @@
 		C85226001BB5715D000589DA /* MonkeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonkeyTests.swift; sourceTree = "<group>"; };
 		C852260F1BB5716B000589DA /* MonkeyUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MonkeyUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C85226231BB571CF000589DA /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		C85226241BB571CF000589DA /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
 		C85226251BB571CF000589DA /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		C85226261BB571CF000589DA /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C85226271BB571CF000589DA /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -76,7 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C85226281BB571CF000589DA /* Alamofire.framework in Frameworks */,
-				C85226291BB571CF000589DA /* Box.framework in Frameworks */,
 				C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */,
 				C852262B1BB571CF000589DA /* Result.framework in Frameworks */,
 				C852262C1BB571CF000589DA /* SwiftyJSON.framework in Frameworks */,
@@ -91,7 +87,6 @@
 				C85226301BB572FF000589DA /* BrightFutures.framework in Frameworks */,
 				C85226321BB572FF000589DA /* SwiftyJSON.framework in Frameworks */,
 				C85226311BB572FF000589DA /* Result.framework in Frameworks */,
-				C852262F1BB572FF000589DA /* Box.framework in Frameworks */,
 				C852262E1BB572FF000589DA /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,8 +128,7 @@
 				C85225FD1BB5715D000589DA /* Queue.swift */,
 				C85225FE1BB5715D000589DA /* Trace.swift */,
 			);
-			name = Code;
-			path = src;
+			path = Code;
 			sourceTree = "<group>";
 		};
 		C85225FF1BB5715D000589DA /* TestCode */ = {
@@ -142,15 +136,13 @@
 			children = (
 				C85226001BB5715D000589DA /* MonkeyTests.swift */,
 			);
-			name = TestCode;
-			path = tests;
+			path = TestCode;
 			sourceTree = "<group>";
 		};
 		C852262D1BB571D3000589DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				C85226231BB571CF000589DA /* Alamofire.framework */,
-				C85226241BB571CF000589DA /* Box.framework */,
 				C85226251BB571CF000589DA /* BrightFutures.framework */,
 				C85226261BB571CF000589DA /* Result.framework */,
 				C85226271BB571CF000589DA /* SwiftyJSON.framework */,
