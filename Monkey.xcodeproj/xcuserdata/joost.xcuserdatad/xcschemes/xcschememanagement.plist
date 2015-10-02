@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Monkey-OSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Monkey-watchOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>Monkey.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +33,16 @@
 			<true/>
 		</dict>
 		<key>C852260E1BB5716B000589DA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8DAAFE91BBE904100B2696B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8DAAFF61BBE904C00B2696B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

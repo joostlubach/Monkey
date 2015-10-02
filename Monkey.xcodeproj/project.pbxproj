@@ -34,6 +34,24 @@
 		C85226301BB572FF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; settings = {ASSET_TAGS = (); }; };
 		C85226311BB572FF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; settings = {ASSET_TAGS = (); }; };
 		C85226321BB572FF000589DA /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226271BB571CF000589DA /* SwiftyJSON.framework */; settings = {ASSET_TAGS = (); }; };
+		C8DAAFED1BBE904100B2696B /* Monkey-watchOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DAAFEC1BBE904100B2696B /* Monkey-watchOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8DAAFFA1BBE904C00B2696B /* Monkey-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DAAFF91BBE904C00B2696B /* Monkey-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8DAAFFF1BBE905400B2696B /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0001BBE905400B2696B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0011BBE905400B2696B /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0021BBE905400B2696B /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0031BBE905400B2696B /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0041BBE905400B2696B /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0051BBE905400B2696B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0061BBE905400B2696B /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0071BBE905500B2696B /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0081BBE905500B2696B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB0091BBE905500B2696B /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB00A1BBE905500B2696B /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB00B1BBE905500B2696B /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB00C1BBE905500B2696B /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB00D1BBE905500B2696B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
+		C8DAB00E1BBE905500B2696B /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +83,12 @@
 		C85226251BB571CF000589DA /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		C85226261BB571CF000589DA /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C85226271BB571CF000589DA /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		C8DAAFEA1BBE904100B2696B /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8DAAFEC1BBE904100B2696B /* Monkey-watchOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Monkey-watchOS.h"; sourceTree = "<group>"; };
+		C8DAAFEE1BBE904100B2696B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8DAAFF71BBE904C00B2696B /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8DAAFF91BBE904C00B2696B /* Monkey-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Monkey-OSX.h"; sourceTree = "<group>"; };
+		C8DAAFFB1BBE904C00B2696B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +115,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8DAAFE61BBE904100B2696B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8DAAFF31BBE904C00B2696B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -101,6 +139,8 @@
 				C85225FF1BB5715D000589DA /* TestCode */,
 				C85225F31BB57151000589DA /* Info-Tests.plist */,
 				C85225F41BB57151000589DA /* Info.plist */,
+				C8DAAFEB1BBE904100B2696B /* Monkey-watchOS */,
+				C8DAAFF81BBE904C00B2696B /* Monkey-OSX */,
 				C852262D1BB571D3000589DA /* Frameworks */,
 				C85225E91BB5710F000589DA /* Products */,
 			);
@@ -111,6 +151,8 @@
 			children = (
 				C85225E81BB5710F000589DA /* Monkey.framework */,
 				C852260F1BB5716B000589DA /* MonkeyUnitTests.xctest */,
+				C8DAAFEA1BBE904100B2696B /* Monkey.framework */,
+				C8DAAFF71BBE904C00B2696B /* Monkey.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +192,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C8DAAFEB1BBE904100B2696B /* Monkey-watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				C8DAAFEC1BBE904100B2696B /* Monkey-watchOS.h */,
+				C8DAAFEE1BBE904100B2696B /* Info.plist */,
+			);
+			path = "Monkey-watchOS";
+			sourceTree = "<group>";
+		};
+		C8DAAFF81BBE904C00B2696B /* Monkey-OSX */ = {
+			isa = PBXGroup;
+			children = (
+				C8DAAFF91BBE904C00B2696B /* Monkey-OSX.h */,
+				C8DAAFFB1BBE904C00B2696B /* Info.plist */,
+			);
+			path = "Monkey-OSX";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -161,12 +221,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8DAAFE71BBE904100B2696B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8DAAFED1BBE904100B2696B /* Monkey-watchOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8DAAFF41BBE904C00B2696B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8DAAFFA1BBE904C00B2696B /* Monkey-OSX.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C85225E71BB5710F000589DA /* Monkey */ = {
+		C85225E71BB5710F000589DA /* Monkey-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C85225F01BB5710F000589DA /* Build configuration list for PBXNativeTarget "Monkey" */;
+			buildConfigurationList = C85225F01BB5710F000589DA /* Build configuration list for PBXNativeTarget "Monkey-iOS" */;
 			buildPhases = (
 				C85225E31BB5710F000589DA /* Sources */,
 				C85225E41BB5710F000589DA /* Frameworks */,
@@ -177,7 +253,7 @@
 			);
 			dependencies = (
 			);
-			name = Monkey;
+			name = "Monkey-iOS";
 			productName = Monkey;
 			productReference = C85225E81BB5710F000589DA /* Monkey.framework */;
 			productType = "com.apple.product-type.framework";
@@ -200,6 +276,42 @@
 			productReference = C852260F1BB5716B000589DA /* MonkeyUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		C8DAAFE91BBE904100B2696B /* Monkey-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8DAAFEF1BBE904100B2696B /* Build configuration list for PBXNativeTarget "Monkey-watchOS" */;
+			buildPhases = (
+				C8DAAFE51BBE904100B2696B /* Sources */,
+				C8DAAFE61BBE904100B2696B /* Frameworks */,
+				C8DAAFE71BBE904100B2696B /* Headers */,
+				C8DAAFE81BBE904100B2696B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Monkey-watchOS";
+			productName = "Monkey-watchOS";
+			productReference = C8DAAFEA1BBE904100B2696B /* Monkey.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C8DAAFF61BBE904C00B2696B /* Monkey-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8DAAFFC1BBE904C00B2696B /* Build configuration list for PBXNativeTarget "Monkey-OSX" */;
+			buildPhases = (
+				C8DAAFF21BBE904C00B2696B /* Sources */,
+				C8DAAFF31BBE904C00B2696B /* Frameworks */,
+				C8DAAFF41BBE904C00B2696B /* Headers */,
+				C8DAAFF51BBE904C00B2696B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Monkey-OSX";
+			productName = "Monkey-OSX";
+			productReference = C8DAAFF71BBE904C00B2696B /* Monkey.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -213,6 +325,12 @@
 						CreatedOnToolsVersion = 7.0;
 					};
 					C852260E1BB5716B000589DA = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					C8DAAFE91BBE904100B2696B = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					C8DAAFF61BBE904C00B2696B = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
@@ -229,7 +347,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C85225E71BB5710F000589DA /* Monkey */,
+				C85225E71BB5710F000589DA /* Monkey-iOS */,
+				C8DAAFE91BBE904100B2696B /* Monkey-watchOS */,
+				C8DAAFF61BBE904C00B2696B /* Monkey-OSX */,
 				C852260E1BB5716B000589DA /* MonkeyUnitTests */,
 			);
 		};
@@ -244,6 +364,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C852260D1BB5716B000589DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8DAAFE81BBE904100B2696B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8DAAFF51BBE904C00B2696B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -284,12 +418,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8DAAFE51BBE904100B2696B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8DAB0031BBE905400B2696B /* APISession.swift in Sources */,
+				C8DAB0051BBE905400B2696B /* Queue.swift in Sources */,
+				C8DAB0011BBE905400B2696B /* APICredentials.swift in Sources */,
+				C8DAB0041BBE905400B2696B /* Monkey.swift in Sources */,
+				C8DAB0021BBE905400B2696B /* APIResponse.swift in Sources */,
+				C8DAB0061BBE905400B2696B /* Trace.swift in Sources */,
+				C8DAAFFF1BBE905400B2696B /* APICall.swift in Sources */,
+				C8DAB0001BBE905400B2696B /* APIClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8DAAFF21BBE904C00B2696B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8DAB00B1BBE905500B2696B /* APISession.swift in Sources */,
+				C8DAB00D1BBE905500B2696B /* Queue.swift in Sources */,
+				C8DAB0091BBE905500B2696B /* APICredentials.swift in Sources */,
+				C8DAB00C1BBE905500B2696B /* Monkey.swift in Sources */,
+				C8DAB00A1BBE905500B2696B /* APIResponse.swift in Sources */,
+				C8DAB00E1BBE905500B2696B /* Trace.swift in Sources */,
+				C8DAB0071BBE905500B2696B /* APICall.swift in Sources */,
+				C8DAB0081BBE905500B2696B /* APIClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		C85226161BB5716B000589DA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C85225E71BB5710F000589DA /* Monkey */;
+			target = C85225E71BB5710F000589DA /* Monkey-iOS */;
 			targetProxy = C85226151BB5716B000589DA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -399,7 +563,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Monkey;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -419,7 +583,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Monkey;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -452,6 +616,84 @@
 			};
 			name = Release;
 		};
+		C8DAAFF01BBE904100B2696B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Monkey-watchOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.mosdev.Monkey-watchOS";
+				PRODUCT_NAME = Monkey;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C8DAAFF11BBE904100B2696B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Monkey-watchOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.mosdev.Monkey-watchOS";
+				PRODUCT_NAME = Monkey;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C8DAAFFD1BBE904C00B2696B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "Monkey-OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
+				PRODUCT_NAME = Monkey;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C8DAAFFE1BBE904C00B2696B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "Monkey-OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
+				PRODUCT_NAME = Monkey;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -464,7 +706,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C85225F01BB5710F000589DA /* Build configuration list for PBXNativeTarget "Monkey" */ = {
+		C85225F01BB5710F000589DA /* Build configuration list for PBXNativeTarget "Monkey-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C85225F11BB5710F000589DA /* Debug */,
@@ -481,6 +723,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		C8DAAFEF1BBE904100B2696B /* Build configuration list for PBXNativeTarget "Monkey-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8DAAFF01BBE904100B2696B /* Debug */,
+				C8DAAFF11BBE904100B2696B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C8DAAFFC1BBE904C00B2696B /* Build configuration list for PBXNativeTarget "Monkey-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8DAAFFD1BBE904C00B2696B /* Debug */,
+				C8DAAFFE1BBE904C00B2696B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
