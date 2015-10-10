@@ -5,11 +5,9 @@ import SwiftyJSON
 
 public class APIClient {
 
-  /**
-  Initializes the API client.
-
-  - parameter baseURL:   The base URL for the API. All paths will be appended to this URL.
-  */
+  /// Initializes the API client.
+  ///
+  /// - parameter baseURL:   The base URL for the API. All paths will be appended to this URL.
   public init(baseURL: NSURL, storesSession: Bool = true) {
     self.baseURL = baseURL
     self.storesSession = storesSession
@@ -177,18 +175,16 @@ public class APIClient {
 
   private var queue = OperationQueue()
 
-  /**
-  Adds a handler to be executed on all requests.
-
-  Example
-    The following example adds a default failure response:
-
-      client.prepare { call in
-        call.responseError { error in
-          displayError(error)
-        }
-      }
-  */
+  /// Adds a handler to be executed on all requests.
+  ///
+  /// Example
+  ///   The following example adds a default failure response:
+  ///
+  ///     client.prepare { call in
+  ///       call.responseError { error in
+  ///         displayError(error)
+  ///       }
+  ///     }
   public func prepare(block: PreparationBlock) {
     preparationBlocks.append(block)
   }
@@ -199,6 +195,7 @@ public class APIClient {
     let urlRequest = NSMutableURLRequest(URL: url)
     urlRequest.timeoutInterval = 4
     urlRequest.HTTPMethod = method.rawValue
+    urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
     return urlRequest
   }

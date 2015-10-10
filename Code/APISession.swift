@@ -41,7 +41,7 @@ public class BearerTokenAPISession: NSObject, APISession, NSCoding {
   }
 
   public func authenticateRequest(request: NSMutableURLRequest) {
-    request.addValue(authorizationHeader, forHTTPHeaderField: "Authorization")
+    request.setValue(authorizationHeader, forHTTPHeaderField: "Authorization")
   }
 
 }
