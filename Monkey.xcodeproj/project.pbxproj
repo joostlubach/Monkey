@@ -20,22 +20,6 @@
 		C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; };
 		C852262B1BB571CF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; };
 		C852262C1BB571CF000589DA /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226271BB571CF000589DA /* SwiftyJSON.framework */; };
-		C8DAAFFF1BBE905400B2696B /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0001BBE905400B2696B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0011BBE905400B2696B /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0021BBE905400B2696B /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0031BBE905400B2696B /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0041BBE905400B2696B /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0051BBE905400B2696B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0061BBE905400B2696B /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0071BBE905500B2696B /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0081BBE905500B2696B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB0091BBE905500B2696B /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB00A1BBE905500B2696B /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB00B1BBE905500B2696B /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB00C1BBE905500B2696B /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB00D1BBE905500B2696B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
-		C8DAB00E1BBE905500B2696B /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,8 +38,6 @@
 		C85226251BB571CF000589DA /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		C85226261BB571CF000589DA /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C85226271BB571CF000589DA /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
-		C8DAAFEA1BBE904100B2696B /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8DAAFF71BBE904C00B2696B /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,20 +49,6 @@
 				C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */,
 				C852262B1BB571CF000589DA /* Result.framework in Frameworks */,
 				C852262C1BB571CF000589DA /* SwiftyJSON.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFE61BBE904100B2696B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFF31BBE904C00B2696B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,8 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				C85225E81BB5710F000589DA /* Monkey.framework */,
-				C8DAAFEA1BBE904100B2696B /* Monkey.framework */,
-				C8DAAFF71BBE904C00B2696B /* Monkey.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,20 +111,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C8DAAFE71BBE904100B2696B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFF41BBE904C00B2696B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -180,42 +132,6 @@
 			productReference = C85225E81BB5710F000589DA /* Monkey.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C8DAAFE91BBE904100B2696B /* Monkey-watchOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C8DAAFEF1BBE904100B2696B /* Build configuration list for PBXNativeTarget "Monkey-watchOS" */;
-			buildPhases = (
-				C8DAAFE51BBE904100B2696B /* Sources */,
-				C8DAAFE61BBE904100B2696B /* Frameworks */,
-				C8DAAFE71BBE904100B2696B /* Headers */,
-				C8DAAFE81BBE904100B2696B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Monkey-watchOS";
-			productName = "Monkey-watchOS";
-			productReference = C8DAAFEA1BBE904100B2696B /* Monkey.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		C8DAAFF61BBE904C00B2696B /* Monkey-OSX */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C8DAAFFC1BBE904C00B2696B /* Build configuration list for PBXNativeTarget "Monkey-OSX" */;
-			buildPhases = (
-				C8DAAFF21BBE904C00B2696B /* Sources */,
-				C8DAAFF31BBE904C00B2696B /* Frameworks */,
-				C8DAAFF41BBE904C00B2696B /* Headers */,
-				C8DAAFF51BBE904C00B2696B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Monkey-OSX";
-			productName = "Monkey-OSX";
-			productReference = C8DAAFF71BBE904C00B2696B /* Monkey.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -226,12 +142,6 @@
 				ORGANIZATIONNAME = "Mos Dev";
 				TargetAttributes = {
 					C85225E71BB5710F000589DA = {
-						CreatedOnToolsVersion = 7.0;
-					};
-					C8DAAFE91BBE904100B2696B = {
-						CreatedOnToolsVersion = 7.0;
-					};
-					C8DAAFF61BBE904C00B2696B = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
@@ -249,28 +159,12 @@
 			projectRoot = "";
 			targets = (
 				C85225E71BB5710F000589DA /* Monkey-iOS */,
-				C8DAAFE91BBE904100B2696B /* Monkey-watchOS */,
-				C8DAAFF61BBE904C00B2696B /* Monkey-OSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C85225E61BB5710F000589DA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFE81BBE904100B2696B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFF51BBE904C00B2696B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -292,36 +186,6 @@
 				C85226091BB5715D000589DA /* Trace.swift in Sources */,
 				C85226011BB5715D000589DA /* APICall.swift in Sources */,
 				C85226021BB5715D000589DA /* APIClient.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFE51BBE904100B2696B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C8DAB0031BBE905400B2696B /* APISession.swift in Sources */,
-				C8DAB0051BBE905400B2696B /* Queue.swift in Sources */,
-				C8DAB0011BBE905400B2696B /* APICredentials.swift in Sources */,
-				C8DAB0041BBE905400B2696B /* Monkey.swift in Sources */,
-				C8DAB0021BBE905400B2696B /* APIResponse.swift in Sources */,
-				C8DAB0061BBE905400B2696B /* Trace.swift in Sources */,
-				C8DAAFFF1BBE905400B2696B /* APICall.swift in Sources */,
-				C8DAB0001BBE905400B2696B /* APIClient.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C8DAAFF21BBE904C00B2696B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C8DAB00B1BBE905500B2696B /* APISession.swift in Sources */,
-				C8DAB00D1BBE905500B2696B /* Queue.swift in Sources */,
-				C8DAB0091BBE905500B2696B /* APICredentials.swift in Sources */,
-				C8DAB00C1BBE905500B2696B /* Monkey.swift in Sources */,
-				C8DAB00A1BBE905500B2696B /* APIResponse.swift in Sources */,
-				C8DAB00E1BBE905500B2696B /* Trace.swift in Sources */,
-				C8DAB0071BBE905500B2696B /* APICall.swift in Sources */,
-				C8DAB0081BBE905500B2696B /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,100 +325,6 @@
 			};
 			name = Release;
 		};
-		C8DAAFF01BBE904100B2696B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = "Monkey-watchOS/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mosdev.Monkey-watchOS";
-				PRODUCT_NAME = Monkey;
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		C8DAAFF11BBE904100B2696B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = "Monkey-watchOS/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "co.mosdev.Monkey-watchOS";
-				PRODUCT_NAME = Monkey;
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
-		C8DAAFFD1BBE904C00B2696B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Monkey-OSX/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
-				PRODUCT_NAME = Monkey;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		C8DAAFFE1BBE904C00B2696B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Monkey-OSX/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_BUNDLE_IDENTIFIER = co.mosdev.Monkey;
-				PRODUCT_NAME = Monkey;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -572,24 +342,6 @@
 			buildConfigurations = (
 				C85225F11BB5710F000589DA /* Debug */,
 				C85225F21BB5710F000589DA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C8DAAFEF1BBE904100B2696B /* Build configuration list for PBXNativeTarget "Monkey-watchOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C8DAAFF01BBE904100B2696B /* Debug */,
-				C8DAAFF11BBE904100B2696B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C8DAAFFC1BBE904C00B2696B /* Build configuration list for PBXNativeTarget "Monkey-OSX" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C8DAAFFD1BBE904C00B2696B /* Debug */,
-				C8DAAFFE1BBE904C00B2696B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
