@@ -1,0 +1,307 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Monkey"
+provides-nominal:
+- "V6Monkey6Monkey"
+- "OV6Monkey6Monkey10ErrorCodes"
+- "OV6Monkey6Monkey10TraceLevel"
+provides-member:
+- ["V6Monkey6Monkey", ""]
+- ["OV6Monkey6Monkey10ErrorCodes", ""]
+- ["OV6Monkey6Monkey10TraceLevel", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "Monkey"
+- "APISession"
+- "Int"
+- !private "NSUserDefaults"
+- !private "NSKeyedUnarchiver"
+- !private ">"
+- !private "<"
+- !private "NSKeyedArchiver"
+- "StringLiteralType"
+- !private "~="
+- "=="
+- "Bool"
+depends-member:
+- !private ["PSs9AnyObject", "archivedDataWithRootObject"]
+- !private ["PSs9AnyObject", "dataForKey"]
+- !private ["PSs9AnyObject", "removeObjectForKey"]
+- !private ["PSs9AnyObject", "setObject"]
+- !private ["PSs9AnyObject", "standardUserDefaults"]
+- !private ["PSs9AnyObject", "unarchiveObjectWithData"]
+- !private ["PSs22BidirectionalIndexType", "Distance"]
+- !private ["PSs22BidirectionalIndexType", "IntegerLiteralType"]
+- !private ["PSs22BidirectionalIndexType", "hashValue"]
+- !private ["PSs21BitwiseOperationsType", "Distance"]
+- !private ["PSs21BitwiseOperationsType", "IntegerLiteralType"]
+- !private ["PSs21BitwiseOperationsType", "hashValue"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["PSs25BooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs11BooleanType", "_getBuiltinLogicValue"]
+- !private ["PSs11CVarArgType", "Distance"]
+- !private ["PSs11CVarArgType", "IntegerLiteralType"]
+- !private ["PSs11CVarArgType", "archivedDataWithRootObject"]
+- !private ["PSs11CVarArgType", "dataForKey"]
+- !private ["PSs11CVarArgType", "hashValue"]
+- !private ["PSs11CVarArgType", "removeObjectForKey"]
+- !private ["PSs11CVarArgType", "setObject"]
+- !private ["PSs11CVarArgType", "standardUserDefaults"]
+- !private ["PSs11CVarArgType", "unarchiveObjectWithData"]
+- !private ["PSs10Comparable", "Distance"]
+- !private ["PSs10Comparable", "IntegerLiteralType"]
+- !private ["PSs10Comparable", "hashValue"]
+- ["PSs28CustomDebugStringConvertible", "Some"]
+- !private ["PSs23CustomStringConvertible", "Distance"]
+- !private ["PSs23CustomStringConvertible", "IntegerLiteralType"]
+- !private ["PSs23CustomStringConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs23CustomStringConvertible", "archivedDataWithRootObject"]
+- !private ["PSs23CustomStringConvertible", "dataForKey"]
+- !private ["PSs23CustomStringConvertible", "hashValue"]
+- !private ["PSs23CustomStringConvertible", "removeObjectForKey"]
+- !private ["PSs23CustomStringConvertible", "setObject"]
+- !private ["PSs23CustomStringConvertible", "standardUserDefaults"]
+- !private ["PSs23CustomStringConvertible", "unarchiveObjectWithData"]
+- !private ["Sd", "deinit"]
+- !private ["PSs9Equatable", "Distance"]
+- !private ["PSs9Equatable", "IntegerLiteralType"]
+- ["PSs9Equatable", "RawValue"]
+- ["PSs9Equatable", "RequestsAndStatuses"]
+- !private ["PSs9Equatable", "_getBuiltinLogicValue"]
+- !private ["PSs9Equatable", "archivedDataWithRootObject"]
+- !private ["PSs9Equatable", "dataForKey"]
+- ["PSs9Equatable", "hashValue"]
+- ["PSs9Equatable", "init"]
+- ["PSs9Equatable", "rawValue"]
+- !private ["PSs9Equatable", "removeObjectForKey"]
+- !private ["PSs9Equatable", "setObject"]
+- !private ["PSs9Equatable", "standardUserDefaults"]
+- !private ["PSs9Equatable", "unarchiveObjectWithData"]
+- ["PSs9Equatable", ""]
+- ["OV6Monkey6Monkey10ErrorCodes", "HTTPError"]
+- ["OV6Monkey6Monkey10ErrorCodes", "InvalidJSON"]
+- ["OV6Monkey6Monkey10ErrorCodes", "RawValue"]
+- ["OV6Monkey6Monkey10ErrorCodes", "deinit"]
+- ["OV6Monkey6Monkey10ErrorCodes", "hashValue"]
+- ["OV6Monkey6Monkey10ErrorCodes", "init"]
+- ["OV6Monkey6Monkey10ErrorCodes", "rawValue"]
+- !private ["PSs16ForwardIndexType", "Distance"]
+- !private ["PSs16ForwardIndexType", "IntegerLiteralType"]
+- !private ["PSs16ForwardIndexType", "hashValue"]
+- !private ["PSs8Hashable", "Distance"]
+- !private ["PSs8Hashable", "IntegerLiteralType"]
+- ["PSs8Hashable", "RawValue"]
+- ["PSs8Hashable", "RequestsAndStatuses"]
+- !private ["PSs8Hashable", "_getBuiltinLogicValue"]
+- !private ["PSs8Hashable", "archivedDataWithRootObject"]
+- !private ["PSs8Hashable", "dataForKey"]
+- ["PSs8Hashable", "hashValue"]
+- ["PSs8Hashable", "init"]
+- ["PSs8Hashable", "rawValue"]
+- !private ["PSs8Hashable", "removeObjectForKey"]
+- !private ["PSs8Hashable", "setObject"]
+- !private ["PSs8Hashable", "standardUserDefaults"]
+- !private ["PSs8Hashable", "unarchiveObjectWithData"]
+- ["PSs8Hashable", ""]
+- !private ["Si", "Distance"]
+- !private ["Si", "IntegerLiteralType"]
+- !private ["Si", "deinit"]
+- !private ["Si", "hashValue"]
+- !private ["PSs21IntegerArithmeticType", "Distance"]
+- !private ["PSs21IntegerArithmeticType", "IntegerLiteralType"]
+- !private ["PSs21IntegerArithmeticType", "hashValue"]
+- !private ["PSs25IntegerLiteralConvertible", "Distance"]
+- !private ["PSs25IntegerLiteralConvertible", "IntegerLiteralType"]
+- !private ["PSs25IntegerLiteralConvertible", "hashValue"]
+- !private ["PSs11IntegerType", "Distance"]
+- !private ["PSs11IntegerType", "IntegerLiteralType"]
+- !private ["PSs11IntegerType", "hashValue"]
+- !private ["P10SwiftyJSON17JSONSubscriptType", "Distance"]
+- !private ["P10SwiftyJSON17JSONSubscriptType", "IntegerLiteralType"]
+- !private ["P10SwiftyJSON17JSONSubscriptType", "hashValue"]
+- !private ["PSs14MirrorPathType", "Distance"]
+- !private ["PSs14MirrorPathType", "IntegerLiteralType"]
+- !private ["PSs14MirrorPathType", "hashValue"]
+- ["V6Monkey6Monkey", "APIClientDidAuthenticateNotification"]
+- ["V6Monkey6Monkey", "APIClientDidUnauthenticateNotification"]
+- ["V6Monkey6Monkey", "APISession"]
+- ["V6Monkey6Monkey", "Bool"]
+- ["V6Monkey6Monkey", "ErrorCodes"]
+- ["V6Monkey6Monkey", "ErrorDomain"]
+- ["V6Monkey6Monkey", "Int"]
+- !private ["V6Monkey6Monkey", "NSKeyedArchiver"]
+- !private ["V6Monkey6Monkey", "NSKeyedUnarchiver"]
+- !private ["V6Monkey6Monkey", "NSUserDefaults"]
+- ["V6Monkey6Monkey", "SessionKey"]
+- ["V6Monkey6Monkey", "TraceLevel"]
+- ["V6Monkey6Monkey", "init"]
+- ["V6Monkey6Monkey", "readSessionFromUserDefaults"]
+- ["V6Monkey6Monkey", "traceLevel"]
+- ["V6Monkey6Monkey", "writeSessionToUserDefaults"]
+- !private ["CSo7NSCoder", "archivedDataWithRootObject"]
+- !private ["CSo7NSCoder", "unarchiveObjectWithData"]
+- !private ["CSo15NSKeyedArchiver", "archivedDataWithRootObject"]
+- !private ["CSo17NSKeyedUnarchiver", "unarchiveObjectWithData"]
+- !private ["CSo8NSNumber", "deinit"]
+- !private ["CSo8NSObject", "archivedDataWithRootObject"]
+- !private ["CSo8NSObject", "dataForKey"]
+- !private ["CSo8NSObject", "deinit"]
+- !private ["CSo8NSObject", "removeObjectForKey"]
+- !private ["CSo8NSObject", "setObject"]
+- !private ["CSo8NSObject", "standardUserDefaults"]
+- !private ["CSo8NSObject", "unarchiveObjectWithData"]
+- !private ["PSo16NSObjectProtocol", "archivedDataWithRootObject"]
+- !private ["PSo16NSObjectProtocol", "dataForKey"]
+- !private ["PSo16NSObjectProtocol", "removeObjectForKey"]
+- !private ["PSo16NSObjectProtocol", "setObject"]
+- !private ["PSo16NSObjectProtocol", "standardUserDefaults"]
+- !private ["PSo16NSObjectProtocol", "unarchiveObjectWithData"]
+- !private ["CSo14NSUserDefaults", "dataForKey"]
+- !private ["CSo14NSUserDefaults", "removeObjectForKey"]
+- !private ["CSo14NSUserDefaults", "setObject"]
+- !private ["CSo14NSUserDefaults", "standardUserDefaults"]
+- !private ["CSo7NSValue", "deinit"]
+- ["PSs21NilLiteralConvertible", "Some"]
+- ["Sq", "Some"]
+- !private ["Sq", "deinit"]
+- !private ["PSs21RandomAccessIndexType", "Distance"]
+- !private ["PSs21RandomAccessIndexType", "IntegerLiteralType"]
+- !private ["PSs21RandomAccessIndexType", "hashValue"]
+- !private ["VSs5Range", "deinit"]
+- ["PSs16RawRepresentable", "RawValue"]
+- ["PSs16RawRepresentable", "RequestsAndStatuses"]
+- ["PSs16RawRepresentable", "hashValue"]
+- ["PSs16RawRepresentable", "init"]
+- ["PSs16RawRepresentable", "rawValue"]
+- ["PSs16RawRepresentable", ""]
+- !private ["PSs17SignedIntegerType", "Distance"]
+- !private ["PSs17SignedIntegerType", "IntegerLiteralType"]
+- !private ["PSs17SignedIntegerType", "hashValue"]
+- !private ["PSs16SignedNumberType", "Distance"]
+- !private ["PSs16SignedNumberType", "IntegerLiteralType"]
+- !private ["PSs16SignedNumberType", "hashValue"]
+- !private ["PSs10Strideable", "Distance"]
+- !private ["PSs10Strideable", "IntegerLiteralType"]
+- !private ["PSs10Strideable", "hashValue"]
+- ["OV6Monkey6Monkey10TraceLevel", "All"]
+- ["OV6Monkey6Monkey10TraceLevel", "Bool"]
+- ["OV6Monkey6Monkey10TraceLevel", "None"]
+- ["OV6Monkey6Monkey10TraceLevel", "RawValue"]
+- ["OV6Monkey6Monkey10TraceLevel", "RequestsAndStatuses"]
+- ["OV6Monkey6Monkey10TraceLevel", "RequestsOnly"]
+- ["OV6Monkey6Monkey10TraceLevel", "TraceLevel"]
+- ["OV6Monkey6Monkey10TraceLevel", "deinit"]
+- ["OV6Monkey6Monkey10TraceLevel", "hashValue"]
+- ["OV6Monkey6Monkey10TraceLevel", "higherThan"]
+- ["OV6Monkey6Monkey10TraceLevel", "init"]
+- ["OV6Monkey6Monkey10TraceLevel", "lowerThan"]
+- ["OV6Monkey6Monkey10TraceLevel", "rawValue"]
+- !private ["PSs33_BuiltinBooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs33_BuiltinIntegerLiteralConvertible", "Distance"]
+- !private ["PSs33_BuiltinIntegerLiteralConvertible", "IntegerLiteralType"]
+- !private ["PSs33_BuiltinIntegerLiteralConvertible", "hashValue"]
+- !private ["PSs14_Incrementable", "Distance"]
+- !private ["PSs14_Incrementable", "IntegerLiteralType"]
+- !private ["PSs14_Incrementable", "hashValue"]
+- !private ["PSs22_IntegerArithmeticType", "Distance"]
+- !private ["PSs22_IntegerArithmeticType", "IntegerLiteralType"]
+- !private ["PSs22_IntegerArithmeticType", "hashValue"]
+- !private ["PSs12_IntegerType", "Distance"]
+- !private ["PSs12_IntegerType", "IntegerLiteralType"]
+- !private ["PSs12_IntegerType", "hashValue"]
+- !private ["PSs21_ObjectiveCBridgeable", "Distance"]
+- !private ["PSs21_ObjectiveCBridgeable", "IntegerLiteralType"]
+- !private ["PSs21_ObjectiveCBridgeable", "_getBuiltinLogicValue"]
+- !private ["PSs21_ObjectiveCBridgeable", "hashValue"]
+- !private ["VSs26_OptionalNilComparisonType", "deinit"]
+- !private ["PSs22_RandomAccessAmbiguity", "Distance"]
+- !private ["PSs22_RandomAccessAmbiguity", "IntegerLiteralType"]
+- !private ["PSs22_RandomAccessAmbiguity", "hashValue"]
+- !private ["PSs12_Reflectable", "Distance"]
+- !private ["PSs12_Reflectable", "IntegerLiteralType"]
+- ["PSs12_Reflectable", "Some"]
+- !private ["PSs12_Reflectable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "hashValue"]
+- !private ["PSs18_SignedIntegerType", "Distance"]
+- !private ["PSs18_SignedIntegerType", "IntegerLiteralType"]
+- !private ["PSs18_SignedIntegerType", "hashValue"]
+- !private ["PSs11_Strideable", "Distance"]
+- !private ["PSs11_Strideable", "IntegerLiteralType"]
+- !private ["PSs11_Strideable", "hashValue"]
+depends-nominal:
+- !private "PSs9AnyObject"
+- !private "PSs22BidirectionalIndexType"
+- !private "PSs21BitwiseOperationsType"
+- !private "Sb"
+- !private "PSs25BooleanLiteralConvertible"
+- !private "PSs11BooleanType"
+- !private "PSs11CVarArgType"
+- !private "PSs10Comparable"
+- "PSs28CustomDebugStringConvertible"
+- !private "PSs23CustomStringConvertible"
+- !private "Sd"
+- "PSs9Equatable"
+- "OV6Monkey6Monkey10ErrorCodes"
+- !private "PSs16ForwardIndexType"
+- "PSs8Hashable"
+- !private "Si"
+- !private "PSs21IntegerArithmeticType"
+- !private "PSs25IntegerLiteralConvertible"
+- !private "PSs11IntegerType"
+- !private "P10SwiftyJSON17JSONSubscriptType"
+- !private "PSs14MirrorPathType"
+- "V6Monkey6Monkey"
+- !private "CSo7NSCoder"
+- !private "CSo15NSKeyedArchiver"
+- !private "CSo17NSKeyedUnarchiver"
+- !private "CSo8NSNumber"
+- !private "CSo8NSObject"
+- !private "PSo16NSObjectProtocol"
+- !private "CSo14NSUserDefaults"
+- !private "CSo7NSValue"
+- "PSs21NilLiteralConvertible"
+- "Sq"
+- !private "PSs21RandomAccessIndexType"
+- !private "VSs5Range"
+- "PSs16RawRepresentable"
+- !private "PSs17SignedIntegerType"
+- !private "PSs16SignedNumberType"
+- !private "PSs10Strideable"
+- "OV6Monkey6Monkey10TraceLevel"
+- !private "PSs33_BuiltinBooleanLiteralConvertible"
+- !private "PSs33_BuiltinIntegerLiteralConvertible"
+- !private "PSs14_Incrementable"
+- !private "PSs22_IntegerArithmeticType"
+- !private "PSs12_IntegerType"
+- !private "PSs21_ObjectiveCBridgeable"
+- !private "VSs26_OptionalNilComparisonType"
+- !private "PSs22_RandomAccessAmbiguity"
+- "PSs12_Reflectable"
+- !private "PSs18_SignedIntegerType"
+- !private "PSs11_Strideable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Swift.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Code/Monkey.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/build/Monkey.build/Release-iphoneos/Monkey-iOS.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/arm64/CoreImage.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/SwiftyJSON.framework/Modules/SwiftyJSON.swiftmodule/arm64.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/SwiftyJSON.framework/Headers/SwiftyJSON-Swift.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/SwiftyJSON.framework/Headers/SwiftyJSON.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/SwiftyJSON.framework/Modules/module.modulemap"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Alamofire.framework/Modules/Alamofire.swiftmodule/arm64.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Alamofire.framework/Headers/Alamofire-Swift.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Alamofire.framework/Headers/Alamofire.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Alamofire.framework/Modules/module.modulemap"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/BrightFutures.framework/Modules/BrightFutures.swiftmodule/arm64.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Result.framework/Modules/Result.swiftmodule/arm64.swiftmodule"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Result.framework/Headers/Result-Swift.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Result.framework/Headers/Result.h"
+- "/Users/joost/Work/Projects/OpenSource/Monkey/Carthage/Build/iOS/Result.framework/Modules/module.modulemap"
+interface-hash: "1781ecf9535d5624188b7907a92f2974"
