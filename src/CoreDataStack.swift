@@ -61,6 +61,23 @@ public class CoreDataStack {
     }
   }
 
+  /// Creates a new context on the main thread.
+  ///
+  /// :param: isolated   Set to true to created an isolated thread, which does not permeate its changes
+  ///                    to the main context.
+  public func newMainContext(isolated: Bool = false) -> ManagedObjectContext {
+    if isolated {
+      return ManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+    } else {
+      return ManagedObjectContext(concurrencyType: .MainQueueConcurrencyType, parentContext: mainContext)
+    }
+  }
+
+  /// Creates a new context on the main thread, with the given context as parent context.
+  public func newMainContext(parentContext: ManagedObjectContext) -> ManagedObjectContext {
+    return ManagedObjectContext(concurrencyType: .MainQueueConcurrencyType, parentContext: parentContext)
+  }
+
   // MARK: - Convenience accessors
 
   /// Named representation of commonly used contexts.
