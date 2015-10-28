@@ -15,7 +15,7 @@ public class ManagedObjectContext: NSObject {
     self.init(underlyingContext: NSManagedObjectContext(concurrencyType: concurrencyType))
 
     if let context = parentContext {
-      underlyingContext.performBlock {
+      underlyingContext.performBlockAndWait {
         self.underlyingContext.parentContext = context.underlyingContext
       }
     }

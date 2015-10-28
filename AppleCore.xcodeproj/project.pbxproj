@@ -20,7 +20,7 @@
 		C841EAE31B443D110021DA67 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C841EAE11B443D110021DA67 /* BrightFutures.framework */; };
 		C841EAE41B443D110021DA67 /* QueryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C841EAE21B443D110021DA67 /* QueryKit.framework */; };
 		C8440EA51B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8440EA41B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift */; };
-		C888896C1B32D72700853895 /* AppleCore..swift in Sources */ = {isa = PBXBuildFile; fileRef = C888896B1B32D72700853895 /* AppleCore..swift */; };
+		C888896C1B32D72700853895 /* AppleCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C888896B1B32D72700853895 /* AppleCore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,7 @@
 		C841EAE11B443D110021DA67 /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BrightFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C841EAE21B443D110021DA67 /* QueryKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QueryKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8440EA41B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+AppleCore.swift"; sourceTree = "<group>"; };
-		C888896B1B32D72700853895 /* AppleCore..swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleCore..swift; sourceTree = "<group>"; };
+		C888896B1B32D72700853895 /* AppleCore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleCore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				C80877F91B1F48DD00621E25 /* AppleCore.h */,
-				C888896B1B32D72700853895 /* AppleCore..swift */,
+				C888896B1B32D72700853895 /* AppleCore.swift */,
 				C80878101B1F490100621E25 /* CoreDataStack.swift */,
 				C808781C1B1F4B5B00621E25 /* ManagedObjectContext.swift */,
 				C808781E1B1F4B8400621E25 /* DataManager.swift */,
@@ -251,7 +251,7 @@
 				C8440EA51B304FBB00F5FFF2 /* NSManagedObject+AppleCore.swift in Sources */,
 				C808781F1B1F4B8400621E25 /* DataManager.swift in Sources */,
 				C80878231B1F4D2800621E25 /* StringUtil.swift in Sources */,
-				C888896C1B32D72700853895 /* AppleCore..swift in Sources */,
+				C888896C1B32D72700853895 /* AppleCore.swift in Sources */,
 				C80878211B1F4B9B00621E25 /* DataMapper.swift in Sources */,
 				C80878111B1F490100621E25 /* CoreDataStack.swift in Sources */,
 			);
