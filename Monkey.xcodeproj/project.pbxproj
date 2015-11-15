@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C85226011BB5715D000589DA /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226021BB5715D000589DA /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226031BB5715D000589DA /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226041BB5715D000589DA /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226051BB5715D000589DA /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; settings = {ASSET_TAGS = (); }; };
+		C85226011BB5715D000589DA /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; };
+		C85226021BB5715D000589DA /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; };
+		C85226031BB5715D000589DA /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; };
+		C85226041BB5715D000589DA /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; };
+		C85226051BB5715D000589DA /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; };
 		C85226061BB5715D000589DA /* Monkey.h in Headers */ = {isa = PBXBuildFile; fileRef = C85225FB1BB5715D000589DA /* Monkey.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C85226071BB5715D000589DA /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226081BB5715D000589DA /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; settings = {ASSET_TAGS = (); }; };
-		C85226091BB5715D000589DA /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; settings = {ASSET_TAGS = (); }; };
+		C85226071BB5715D000589DA /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; };
+		C85226081BB5715D000589DA /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; };
+		C85226091BB5715D000589DA /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; };
 		C85226281BB571CF000589DA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226231BB571CF000589DA /* Alamofire.framework */; };
 		C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; };
 		C852262B1BB571CF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; };
@@ -229,7 +229,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -271,7 +271,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

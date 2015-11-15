@@ -248,86 +248,10 @@ extension BrightFuturesTests {
         
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
-    
-    func testSuccessPromise() {
-        let p = Promise<Int, NoError>()
-        
-        Queue.global.async {
-            p.success(fibonacci(10))
-        }
-        
-        let e = self.expectationWithDescription("complete expectation")
-        
-        p.future.onComplete { result in
-            switch result {
-            case .Success(let val):
-                XCTAssert(Int(55) == val)
-            case .Failure(_):
-                XCTAssert(false)
-            }
-            
-            e.fulfill()
-        }
-        
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-    }
-
-    func testFailurePromise() {
-        let p = Promise<Int, TestError>()
-        
-        Queue.global.async {
-            p.tryFailure(TestError.JustAnError)
-        }
-        
-        let e = self.expectationWithDescription("complete expectation")
-        
-        p.future.onComplete { result in
-            switch result {
-            case .Success(_):
-                XCTFail("should not be success")
-            case .Failure(let err):
-                XCTAssertEqual(err, TestError.JustAnError)
-            }
-            
-            e.fulfill()
-        }
-        
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-    }
-    
-    func testPromiseCompleteWithSuccess() {
-        let p = Promise<Int, TestError>()
-        p.tryComplete(Result(value: 2))
-
-        XCTAssert(p.future.isSuccess)
-        XCTAssert(p.future.forced()! == Result<Int, TestError>(value:2))
-    }
-    
-    func testPromiseCompleteWithFailure() {
-        let p = Promise<Int, TestError>()
-        p.tryComplete(Result(error: TestError.JustAnError))
-        
-        XCTAssert(p.future.isFailure)
-        XCTAssert(p.future.forced()! == Result<Int, TestError>(error:TestError.JustAnError))
-    }
-    
-    func testPromiseTrySuccessTwice() {
-        let p = Promise<Int, NoError>()
-        XCTAssert(p.trySuccess(1))
-        XCTAssertFalse(p.trySuccess(2))
-        XCTAssertEqual(p.future.forced()!.value!, 1)
-    }
-    
-    func testPromiseTryFailureTwice() {
-        let p = Promise<Int, TestError>()
-        XCTAssert(p.tryFailure(TestError.JustAnError))
-        XCTAssertFalse(p.tryFailure(TestError.JustAnotherError))
-        XCTAssertEqual(p.future.forced()!.error!, TestError.JustAnError)
-    }
 
     
     func testCustomExecutionContext() {
-        let f = future(context: ImmediateExecutionContext) {
+        let f = future(ImmediateExecutionContext) {
             fibonacci(10)
         }
         
@@ -563,6 +487,19 @@ extension BrightFuturesTests {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
     
+    func testMapError() {
+        let e = self.expectation()
+        
+        Future<Int, TestError>(error: .JustAnError).mapError { _ in
+            return TestError.JustAnotherError
+        }.onFailure { error in
+            XCTAssertEqual(error, TestError.JustAnotherError)
+            e.fulfill()
+        }
+        
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
     func testZip() {
         let f = Future<Int, NoError>(value: 1)
         let f1 = Future<Int, NoError>(value: 2)
@@ -708,13 +645,27 @@ extension BrightFuturesTests {
         
         let e = self.expectation()
         f.onComplete(ImmediateExecutionContext) { _ in
+            XCTAssert(NSThread.isMainThread())
             XCTAssert(isAsync)
             XCTAssert(CACurrentMediaTime() - t0 >= 0)
         }.delay(1).onComplete { _ in
+            XCTAssert(NSThread.isMainThread())
             XCTAssert(CACurrentMediaTime() - t0 >= 1)
             e.fulfill()
         }
         isAsync = true
+        
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testDelayOnGlobalQueue() {
+        let e = self.expectation()
+        Queue.global.async {
+            Future<Int, NoError>(value: 1).delay(0).onComplete(ImmediateExecutionContext) { _ in
+                XCTAssert(!NSThread.isMainThread())
+                e.fulfill()
+            }
+        }
         
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
@@ -753,6 +704,19 @@ extension BrightFuturesTests {
 		
 		self.waitForExpectationsWithTimeout(2, handler: nil)
 	}
+    
+    func testFlatMapResult() {
+        let e = self.expectation()
+        
+        Future<Int, NoError>(value: 3).flatMap { _ in
+            Result(value: 22)
+        }.onSuccess { val in
+            XCTAssertEqual(val, 22)
+            e.fulfill()
+        }
+        
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 }
 
 // MARK: FutureUtils
@@ -1013,7 +977,28 @@ extension BrightFuturesTests {
         let f = [Future<Bool, TestError>(error: .JustAnError)].find(ImmediateExecutionContext) { $0 }
         XCTAssert(f.error! == BrightFuturesError<TestError>.External(.JustAnError));
     }
+
+    func testPromoteError() {
+        let _: Future<Int, TestError> = Future<Int, NoError>().promoteError()
+    }
+    
+    func testPromoteBrightFuturesError() {
+        let _: Future<Int, BrightFuturesError<TestError>> = Future<Int, BrightFuturesError<NoError>>(error: .NoSuchElement).promoteError()
+        let _: Future<Int, BrightFuturesError<TestError>> = Future<Int, BrightFuturesError<NoError>>(error: .InvalidationTokenInvalidated).promoteError()
+        let _: Future<Int, BrightFuturesError<TestError>> = Future<Int, BrightFuturesError<NoError>>(error: .IllegalState).promoteError()
+    }
+    
+    func testPromoteValue() {
+        let _: Future<Int, TestError> = Future<NoValue, TestError>().promoteValue()
+    }
  
+    func testFlatten() {
+        let a: Async<Int> = Async(result: Async(result: 2)).flatten()
+        a.onComplete(ImmediateExecutionContext) { val in
+            XCTAssertEqual(val, 2)
+        }
+    }
+    
 }
 
 /**
@@ -1152,6 +1137,13 @@ extension BrightFuturesTests {
         XCTAssertNil(f1)
         XCTAssertNil(f)
     }
+    
+    func testDescription() {
+        let a = Async(result: 1)
+        XCTAssertEqual(a.description, "Async<Int>(Optional(1))")
+        XCTAssertEqual(a.debugDescription, a.description)
+    }
+    
 }
 
 /**

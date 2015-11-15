@@ -24,8 +24,8 @@ Alamofire is an HTTP networking library written in Swift.
 
 ## Requirements
 
-- iOS 8.0+ / Mac OS X 10.9+ / watchOS 2
-- Xcode 7.0+
+- iOS 8.0+ / Mac OS X 10.9+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 7.1+
 
 ## Migration Guides
 
@@ -48,13 +48,13 @@ Alamofire is an HTTP networking library written in Swift.
 
 ### CocoaPods
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
-
-CocoaPods 0.38.2 is required to build Alamofire on the `swift-2.0` branch. It adds support for Xcode 7, Swift 2.0 and embedded frameworks. You can install it with the following command:
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
 
 ```bash
 $ gem install cocoapods
 ```
+
+> CocoaPods 0.39.0+ is required to build Alamofire 3.0.0+.
 
 To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -63,7 +63,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Alamofire', '~> 2.0'
+pod 'Alamofire', '~> 3.0'
 ```
 
 Then, run the following command:
@@ -74,7 +74,7 @@ $ pod install
 
 ### Carthage
 
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
 You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
@@ -86,8 +86,10 @@ $ brew install carthage
 To integrate Alamofire into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "Alamofire/Alamofire" ~> 2.0
+github "Alamofire/Alamofire" ~> 3.0
 ```
+
+Run `carthage` to build the framework and drag the built `Alamofire.framework` into your Xcode project.
 
 ### Manually
 
@@ -412,12 +414,10 @@ Alamofire.upload(
 ```swift
 Alamofire.download(.GET, "http://httpbin.org/stream/100") { temporaryURL, response in
     let fileManager = NSFileManager.defaultManager()
-    if let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as? NSURL {
-        let pathComponent = response.suggestedFilename
-        return directoryURL.URLByAppendingPathComponent(pathComponent!)
-    }
+    let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+    let pathComponent = response.suggestedFilename
 
-    return temporaryURL
+    return directoryURL.URLByAppendingPathComponent(pathComponent!)
 }
 ```
 
@@ -437,12 +437,16 @@ Alamofire.download(.GET, "http://httpbin.org/stream/100", destination: destinati
 
              // This closure is NOT called on the main queue for performance
              // reasons. To update your ui, dispatch to the main queue.
-             dispatch_async(dispatch_get_main_queue) {
+             dispatch_async(dispatch_get_main_queue()) {
                  print("Total bytes read on main queue: \(totalBytesRead)")
              }
          }
-         .responseData { response in
-             print(response)
+         .response { _, _, _, error in
+             if let error = error {
+                 print("Failed with error: \(error)")
+             } else {
+                 print("Downloaded file successfully")
+             }
          }
 ```
 
@@ -450,9 +454,9 @@ Alamofire.download(.GET, "http://httpbin.org/stream/100", destination: destinati
 
 ```swift
 Alamofire.download(.GET, "http://httpbin.org/stream/100", destination: destination)
-         .responseData { response in
+         .response { _, _, data, _ in
              if let
-                 data = response.data,
+                 data = data,
                  resumeDataString = NSString(data: data, encoding: NSUTF8StringEncoding)
              {
                  print("Resume Data: \(resumeDataString)")
@@ -466,7 +470,7 @@ Alamofire.download(.GET, "http://httpbin.org/stream/100", destination: destinati
 
 ```swift
 let download = Alamofire.download(.GET, "http://httpbin.org/stream/100", destination: destination)
-download.responseData { _ in
+download.response { _, _, _, _ in
     if let
         resumeData = download.resumeData,
         resumeDataString = NSString(data: resumeData, encoding: NSUTF8StringEncoding)
@@ -1077,6 +1081,36 @@ There are several cases where it may make sense to disable certificate chain val
 
 > It is recommended that `validateCertificateChain` always be set to `true` in production environments.
 
+#### App Transport Security
+
+With the addition of App Transport Security (ATS) in iOS 9, it is possible that using a custom `ServerTrustPolicyManager` with several `ServerTrustPolicy` objects will have no effect. If you continuously see `CFNetwork SSLHandshake failed (-9806)` errors, you have probably run into this problem. Apple's ATS system overrides the entire challenge system unless you configure the ATS settings in your app's plist to disable enough of it to allow your app to evaluate the server trust.
+
+If you run into this problem (high probability with self-signed certificates), you can work around this issue by adding the following to your `Info.plist`.
+
+```xml
+<dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>example.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+```
+
+Whether you need to set the `NSExceptionRequiresForwardSecrecy` to `NO` depends on whether your TLS connection is using an allowed cipher suite. In certain cases, it will need to be set to `NO`. The `NSExceptionAllowsInsecureHTTPLoads` MUST be set to `YES` in order to allow the `SessionDelegate` to receive challenge callbacks. Once the challenge callbacks are being called, the `ServerTrustPolicyManager` will take over the server trust evaluation.
+
+> It is recommended to always use valid certificates in production environments.
+
 ---
 
 ## Component Libraries
@@ -1091,9 +1125,6 @@ The following rdars have some affect on the current implementation of Alamofire.
 
 * [rdar://22024442](http://www.openradar.me/radar?id=6082025006039040) - Array of [SecCertificate] crashing Swift 2.0 compiler in optimized builds
 * [rdar://21349340](http://www.openradar.me/radar?id=5517037090635776) - Compiler throwing warning due to toll-free bridging issue in test case
-* [rdar://22307360](http://www.openradar.me/radar?id=4895563208196096) - Swift #available check not working properly with min deployment target
-
-    > Resolved in Xcode 7.1 beta 2. Will remove once Xcode 7.1 is out of beta.
 
 ## FAQ
 
