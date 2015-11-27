@@ -111,7 +111,7 @@ public class APICall: Operation {
         promise.failure(error)
       }
     }
-    promise.future.onFailure { error in
+    self.promise.future.onFailure { error in
       promise.failure(error)
     }
 
