@@ -17,7 +17,7 @@ public protocol Mapping {
 
 public class CustomMapping<T: NSManagedObject>: Mapping {
 
-  typealias Handler = (T, json: JSON, context: ManagedObjectContext) -> Void
+  public typealias Handler = (T, json: JSON, context: ManagedObjectContext) -> Void
 
   public init(_ handler: Handler) {
     self.handler = handler
@@ -55,7 +55,7 @@ public class StandardMapping: Mapping {
 
   /// Gets the JSON that contains this attribute.
   func getAttributeJSON(json: JSON) -> JSON {
-    let parts = split(jsonKey) { $0 == "." }
+    let parts = jsonKey.characters.split { $0 == "." }.map { String($0) }
 
     var current = json
     for part in parts {
@@ -75,12 +75,7 @@ public class StandardMapping: Mapping {
 
   public func mapValueFromJSON(json: JSON, toObject object: NSManagedObject, inContext context: ManagedObjectContext) {
     let value: AnyObject? = getValueFromJSON(json, context: context)
-
-    if let val: AnyObject = value {
-      object.setValue(value, forKey: attribute)
-    } else if !skipIfMissing {
-      object.setValue(nil, forKey: attribute)
-    }
+    object.setValue(value, forKey: attribute)
   }
 
 }
@@ -211,7 +206,7 @@ public class Base64Mapping: StringMapping {
 
   override func getValueFromJSON(json: JSON, context: ManagedObjectContextConvertible) -> AnyObject? {
     if let string = super.getValueFromJSON(json, context: context) as? String {
-      let data = NSData(base64EncodedString: string, options: nil)
+      let data = NSData(base64EncodedString: string, options: [])
       if data == nil {
         assertionFailure("Key `\(jsonKey)`: invalid Base64 string")
       }
@@ -322,9 +317,9 @@ public class RelatedObjectIDMapping<T: NSManagedObject>: StandardMapping {
     var object: NSManagedObject!
 
     if let number = attributeJSON.number {
-      object = manager.findWithID(number.integerValue)
+      object = try! manager.findWithID(number.integerValue)
     } else if let string = attributeJSON.string {
-      object = manager.findWithID(string)
+      object = try! manager.findWithID(string)
     } else if attributeJSON.type == .Null {
       return nil
     } else {

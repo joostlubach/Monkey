@@ -1,10 +1,3 @@
-//  Stack.swift
-//  AppleCore
-//
-//  Created by Joost Lubach on 31/10/14.
-//  Copyright (c) 2014 Joost Lubach. All rights reserved.
-//
-
 import CoreData
 import QueryKit
 import BrightFutures
@@ -25,7 +18,7 @@ public class CoreDataStack {
 
   /// Initializes the stack with a SQLLite store at a default location, and a managed object model.
   ///
-  /// :param: name   The name of both the SQLLite store (<name>.sqllite) and the managed object model.
+  /// - parameter name:   The name of both the SQLLite store (<name>.sqllite) and the managed object model.
   public convenience init?(name: String) {
     self.init(storeURL: CoreDataStack.defaultStoreURLWithName(name), managedObjectModel: CoreDataStack.managedObjectModelForName(name))
   }
@@ -34,7 +27,10 @@ public class CoreDataStack {
 
   /// Cleans up when the application exits.
   public func cleanUp() {
-    mainContext.saveChanges()
+    do {
+      try mainContext.saveChanges()
+    } catch _ {
+    }
   }
 
   // MARK: Properties
@@ -51,7 +47,7 @@ public class CoreDataStack {
 
   /// Creates a new background context.
   ///
-  /// :param: isolated   Set to true to created an isolated thread, which does not permeate its changes
+  /// - parameter isolated:   Set to true to created an isolated thread, which does not permeate its changes
   ///                    to the main context.
   public func newBackgroundContext(isolated: Bool = false) -> ManagedObjectContext {
     if isolated {
@@ -63,7 +59,7 @@ public class CoreDataStack {
 
   /// Creates a new context on the main thread.
   ///
-  /// :param: isolated   Set to true to created an isolated thread, which does not permeate its changes
+  /// - parameter isolated:   Set to true to created an isolated thread, which does not permeate its changes
   ///                    to the main context.
   public func newMainContext(isolated: Bool = false) -> ManagedObjectContext {
     if isolated {
@@ -94,34 +90,6 @@ public class CoreDataStack {
 
   }
 
-  /// Saves changes asynchronously using the given block on the given context.
-  public func save(#context: NamedObjectContext, block: (ManagedObjectContext) -> Void) -> Future<Void> {
-    return saveWithError { context, _ in block(context) }
-  }
-
-  /// Saves changes asynchronously using the given block on the given context.
-  ///
-  /// - parameter block: A block to execute. Set an error in the given pointer to make the future fail.
-  public func saveWithError(#context: NamedObjectContext, block: (ManagedObjectContext, NSErrorPointer) -> Void) -> Future<Void> {
-    return namedContext(context).save(block)
-  }
-
-  public func save(block: (ManagedObjectContext) -> Void) -> Future<Void> {
-    return save(context: .Background, block: block)
-  }
-
-  public func saveWithError(block: (ManagedObjectContext, NSErrorPointer) -> Void) -> Future<Void> {
-    return saveWithError(context: .Background, block: block)
-  }
-
-  /// Saves changes synchronously using the given block on the given context.
-  public func saveAndWait(#context: NamedObjectContext, _ error: NSErrorPointer = nil, block: (ManagedObjectContext) -> Void) -> Bool {
-    return namedContext(context).saveAndWait(error: error, block: block)
-  }
-  public func saveAndWait(block: (ManagedObjectContext) -> Void) -> Bool {
-    return saveAndWait(context: .Background, block: block)
-  }
-
   /// Creates a new query for the given type.
   public func query<T: NSManagedObject>(type: T.Type, context: NamedObjectContext = .Main) -> QuerySet<T> {
     return namedContext(context).query(type)
@@ -140,7 +108,7 @@ public class CoreDataStack {
     case .Background:
       return newBackgroundContext()
     case .Isolated:
-      return newBackgroundContext(isolated: true)
+      return newBackgroundContext(true)
     }
   }
 
@@ -156,18 +124,22 @@ public class CoreDataStack {
   /// Determines a default store URL for a store with the given name.
   public static func defaultStoreURLWithName(name: String) -> NSURL {
     let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-    let applicationDocumentsDirectory = urls[urls.count-1] as! NSURL
+    let applicationDocumentsDirectory = urls[urls.count-1] 
 
     return applicationDocumentsDirectory.URLByAppendingPathComponent("\(name).sqlite")
   }
 
   /// Tries to create a persistent store coordinator at the given URL, setting it up using the given
   /// managed object model.
-  public static func createPersistentStoreCoordinator(#storeURL: NSURL, usingModel model: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+  public static func createPersistentStoreCoordinator(storeURL storeURL: NSURL, usingModel model: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
     var error: NSError? = nil
 
     let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-    coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil, error: &error)
+    do {
+      try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
+    } catch let error1 as NSError {
+      error = error1
+    }
 
     if error == nil {
       return coordinator
