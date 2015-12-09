@@ -66,7 +66,7 @@ public class ManagedObjectContext: NSObject {
     return promise.future
   }
 
-  /// Performs a block on this context, passing this context and waits until execution is finished.
+  /// Performs a throwing block on this context, and waits until execution is finished.
   public func performBlockAndWait(block: () throws -> Void) throws {
     var internalError: NSError?
 
@@ -81,6 +81,11 @@ public class ManagedObjectContext: NSObject {
     if let error = internalError {
       throw error
     }
+  }
+
+  /// Performs a non-throwing block on this context, and waits until execution is finished.
+  public func performBlockAndWait(block: () -> Void) {
+    underlyingContext.performBlockAndWait(block)
   }
 
   /// Saves data asynchronously using a block.
