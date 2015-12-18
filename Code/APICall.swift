@@ -23,7 +23,7 @@ public class APICall: Operation {
   }
 
   /// The client making the request.
-  public weak var client: APIClient?
+  public unowned let client: APIClient
 
   public let request: NSMutableURLRequest
 
@@ -125,7 +125,7 @@ public class APICall: Operation {
 
   /// Authenticates the current request.
   private func authenticateRequest() {
-    client?.session?.authenticateRequest(request)
+    client.session?.authenticateRequest(request)
   }
 
   // MARK: Start & cancel
@@ -142,7 +142,7 @@ public class APICall: Operation {
     alamofireRequest = buildAlamofireRequest()
 
     // Trace this request in the logger.
-    client?.traceRequest(request)
+    client.traceRequest(request)
 
     // Handle progress.
     alamofireRequest!.progress { [weak self] _, current, total in
@@ -171,7 +171,7 @@ public class APICall: Operation {
   }
 
   private func buildAlamofireRequest() -> Alamofire.Request {
-    return Alamofire.Manager.sharedInstance.request(request)
+    return client.alamofireManager.request(request)
   }
 
   private func handleResponse(httpResponse: NSHTTPURLResponse?, data: NSData?, error: NSError?) {
@@ -182,11 +182,11 @@ public class APICall: Operation {
     if authenticate && response.type == .NotAuthorized {
 
       // Perform an authenticate & retry.
-      if retryCount < 3, let client = self.client {
+      if retryCount < 3 {
         client.trace("-> Authenticating & retrying")
         client.authenticateAndRetry(self)
       } else {
-        client?.trace("-> Giving up")
+        client.trace("-> Giving up")
       }
     } else {
 

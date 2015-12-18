@@ -16,6 +16,9 @@ public class APIClient {
   /// The base URL for the API. All paths will be appended to this URL.
   public let baseURL: NSURL
 
+  /// The Alamofire manager to use for this client.
+  public var alamofireManager = Alamofire.Manager.sharedInstance
+
   /// Determines whether the client stores its session in the user defaults.
   public var storesSession: Bool {
     didSet {
