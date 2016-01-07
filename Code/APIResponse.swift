@@ -3,14 +3,6 @@ import SwiftyJSON
 
 public class APIResponse {
 
-  public enum ResponseType {
-    case Success
-    case NotReachable
-    case NotAuthorized
-    case ClientError
-    case ServerError
-  }
-
   init(client: APIClient?, httpResponse: NSHTTPURLResponse?, data: NSData?) {
     self.client = client
     self.httpResponse = httpResponse
@@ -22,13 +14,17 @@ public class APIResponse {
   public weak var client: APIClient?
   public let httpResponse: NSHTTPURLResponse?
 
-  public private(set) var type   = ResponseType.NotReachable
   public private(set) var status = 0
-  
+  public private(set) var error: APIError?
+  public private(set) var underlyingError: NSError?
+  public private(set) var underlyingErrorMessage: String?
+
+  var success: Bool {
+    return error == nil
+  }
+
   public private(set) var data: NSData?
   public private(set) var json: JSON?
-
-  public private(set) var error: NSError?
 
   // MARK: Handlers
 
@@ -41,8 +37,6 @@ public class APIResponse {
   public func whenJSON(@noescape block: (JSON) -> Void) {
     if let json = self.json {
       block(json)
-    } else {
-      fatalError("Cannot read JSON (may be malformed?)")
     }
   }
 
@@ -52,69 +46,52 @@ public class APIResponse {
     status = httpResponse?.statusCode ?? 0
 
     if let data = self.data {
-      if let jsonDict: AnyObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) {
+      do {
+        let jsonDict: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
         json = JSON(jsonDict)
+      } catch let error as NSError {
+        json = nil
+
+        // Mark an invalid data error. This might be overridden later if there is a specific HTTP error.
+        self.error = .InvalidData
+        underlyingError = error
+        underlyingErrorMessage = error.localizedDescription
       }
     }
 
     // Handle HTTP specific errors.
     switch status {
-    case 0: handleConnectionError()
+    case 0: handleError(.NotReachable)
     case 100..<400: handleSuccess() // Might still be a server error.
-    case 401: handleNotAuthorized()
-    case 400..<500: handleClientError()
+    case 400: handleError(.BadRequest)
+    case 401: handleError(.NotAuthorized)
+    case 403: handleError(.Forbidden)
+    case 404: handleError(.NotFound)
+    case 400..<500: handleError(.OtherClientError)
     default: handleServerError()
-    }
-
-    if status < 100 || status >= 400 {
-      error = NSError(domain: Monkey.ErrorDomain, code: Monkey.ErrorCodes.HTTPError.rawValue, userInfo: ["HTTPStatus": status])
-    } else {
-      error = nil
     }
   }
 
   private func handleSuccess() {
-    if let error = json?["error"].string {
-      type = .ServerError
-      client?.traceError(status, message: "Server error: \(error)")
-    } else {
-      type = .Success
-      client?.traceSuccess(status, json: json ?? JSON.null)
-    }
+    client?.traceSuccess(status, json: json ?? JSON.null)
   }
 
-  private func handleConnectionError() {
-    type = .NotReachable
-    client?.traceError(status, message: "Could not connect")
-  }
-
-  private func handleNotAuthorized() {
-    type = .NotAuthorized
-    client?.traceError(status, message: jsonError(defaultError: "Not Authorized"))
-  }
-
-  private func handleClientError() {
-    type = .ClientError
-    client?.traceError(status, message: jsonError(defaultError: "Client error"))
+  private func handleError(error: APIError) {
+    self.error = error
+    underlyingErrorMessage = json?["error"].string
+    client?.traceError(status, message: underlyingErrorMessage ?? error.description)
   }
 
   private func handleServerError() {
-    type = .ServerError
-    client?.traceError(status, message: "Server error")
+    error = .ServerError
+    underlyingErrorMessage = json?["error"].string
+    client?.traceError(status, message: underlyingErrorMessage ?? error!.description)
 
+    // Dump the full server data.
     if let data = self.data, let output = NSString(data: data, encoding: NSUTF8StringEncoding) {
-      // Just dump the data to the log.
       print("---- SERVER OUTPUT ----")
       print(output)
       print("---- END OF SERVER OUTPUT ----")
-    }
-  }
-
-  private func jsonError(defaultError defaultError: String) -> String {
-    if let error = json?["error"].string {
-      return error
-    } else {
-      return defaultError
     }
   }
 

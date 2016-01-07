@@ -52,7 +52,7 @@ public class APICall: Operation {
   private var responseHandlers = [ResponseHandler]()
   private var finallyHandlers = [FinallyHandler]()
 
-  private let promise = Promise<APIResponse, NSError>()
+  private let promise = Promise<APIResponse, APIError>()
 
   /// Adds a response handler, which is called upon any result (success or failure).
   public func response(handler: (APIResponse) -> Void) {
@@ -67,17 +67,17 @@ public class APICall: Operation {
   /// Adds a response handler, which is called upon success.
   public func responseSuccess(handler: (APIResponse) -> Void) {
     response { response in
-      if response.type == .Success {
+      if response.success {
         handler(response)
       }
     }
   }
   
   /// Adds a response handler, which is called upon error.
-  public func responseError(handler: (APIResponse, NSError) -> Void) {
+  public func responseError(handler: (APIResponse, APIError) -> Void) {
     response { response in
-      if response.type != .Success {
-        handler(response, response.error!)
+      if let error = response.error {
+        handler(response, error)
       }
     }
   }
@@ -96,19 +96,18 @@ public class APICall: Operation {
     }
   }
 
-  public var future: Future<APIResponse, NSError> {
+  public var future: Future<APIResponse, APIError> {
     return promise.future
   }
 
-  public var jsonFuture: Future<JSON, NSError> {
-    let promise = Promise<JSON, NSError>()
+  public var jsonFuture: Future<JSON, APIError> {
+    let promise = Promise<JSON, APIError>()
 
     self.promise.future.onSuccess { response in
       if let json = response.json {
         promise.success(json)
       } else {
-        let error = NSError(domain: Monkey.ErrorDomain, code: Monkey.ErrorCodes.InvalidJSON.rawValue, userInfo: nil)
-        promise.failure(error)
+        promise.failure(.InvalidData)
       }
     }
     self.promise.future.onFailure { error in
@@ -179,7 +178,7 @@ public class APICall: Operation {
     let response = APIResponse(client: client, httpResponse: httpResponse, data: data)
     self.response = response
 
-    if authenticate && response.type == .NotAuthorized {
+    if authenticate && response.error == .NotAuthorized {
 
       // Perform an authenticate & retry.
       if retryCount < 3 {
@@ -198,10 +197,10 @@ public class APICall: Operation {
       }
 
       // Also resolve the promise.
-      if response.type == .Success {
-        promise.success(response)
+      if let error = response.error {
+        promise.failure(error)
       } else {
-        promise.failure(error ?? response.error!)
+        promise.success(response)
       }
 
       // Call the finally handlers.

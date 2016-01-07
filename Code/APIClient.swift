@@ -19,13 +19,16 @@ public class APIClient {
   /// The Alamofire manager to use for this client.
   public var alamofireManager = Alamofire.Manager.sharedInstance
 
+  /// The trace level for this client.
+  public var traceLevel: TraceLevel = .RequestsAndStatuses
+
   /// Determines whether the client stores its session in the user defaults.
   public var storesSession: Bool {
     didSet {
       if storesSession {
-        Monkey.writeSessionToUserDefaults(session)
+        writeSessionToUserDefaults(session)
       } else {
-        Monkey.writeSessionToUserDefaults(nil)
+        writeSessionToUserDefaults(nil)
       }
     }
   }
@@ -36,7 +39,7 @@ public class APIClient {
   public var session: APISession? {
     get {
       if _session == nil && storesSession {
-        _session = Monkey.readSessionFromUserDefaults()
+        _session = readSessionFromUserDefaults()
       }
       return _session
     }
@@ -48,7 +51,7 @@ public class APIClient {
       _session = newValue
 
       if storesSession {
-        Monkey.writeSessionToUserDefaults(_session)
+        writeSessionToUserDefaults(_session)
       }
 
       let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -59,6 +62,29 @@ public class APIClient {
       }
     }
   }
+
+  private func readSessionFromUserDefaults() -> APISession? {
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+
+    if let data = userDefaults.dataForKey(SessionKey) {
+      return (NSKeyedUnarchiver.unarchiveObjectWithData(data) as! APISession)
+    } else {
+      return nil
+    }
+  }
+
+  private func writeSessionToUserDefaults(sessionOrNil: APISession?) {
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+
+    if let session = sessionOrNil {
+      let data = NSKeyedArchiver.archivedDataWithRootObject(session)
+      userDefaults.setObject(data, forKey: SessionKey)
+    } else {
+      userDefaults.removeObjectForKey(SessionKey)
+    }
+  }
+  
+
 
   // MARK: Interface
 
@@ -247,3 +273,5 @@ public class APIClient {
   }
 
 }
+
+private let SessionKey  = "co.mosdev.Monkey-APISession"

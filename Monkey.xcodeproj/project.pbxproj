@@ -13,13 +13,14 @@
 		C85226041BB5715D000589DA /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F91BB5715D000589DA /* APIResponse.swift */; };
 		C85226051BB5715D000589DA /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FA1BB5715D000589DA /* APISession.swift */; };
 		C85226061BB5715D000589DA /* Monkey.h in Headers */ = {isa = PBXBuildFile; fileRef = C85225FB1BB5715D000589DA /* Monkey.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C85226071BB5715D000589DA /* Monkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Monkey.swift */; };
+		C85226071BB5715D000589DA /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FC1BB5715D000589DA /* Types.swift */; };
 		C85226081BB5715D000589DA /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FD1BB5715D000589DA /* Queue.swift */; };
-		C85226091BB5715D000589DA /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* Trace.swift */; };
+		C85226091BB5715D000589DA /* APIClient+Tracing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225FE1BB5715D000589DA /* APIClient+Tracing.swift */; };
 		C85226281BB571CF000589DA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226231BB571CF000589DA /* Alamofire.framework */; };
 		C852262A1BB571CF000589DA /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226251BB571CF000589DA /* BrightFutures.framework */; };
 		C852262B1BB571CF000589DA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226261BB571CF000589DA /* Result.framework */; };
 		C852262C1BB571CF000589DA /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85226271BB571CF000589DA /* SwiftyJSON.framework */; };
+		C8DA6E461C3E905F009C231B /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DA6E451C3E905F009C231B /* APIError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,13 +32,14 @@
 		C85225F91BB5715D000589DA /* APIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 		C85225FA1BB5715D000589DA /* APISession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APISession.swift; sourceTree = "<group>"; };
 		C85225FB1BB5715D000589DA /* Monkey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Monkey.h; path = Code/Monkey.h; sourceTree = "<group>"; };
-		C85225FC1BB5715D000589DA /* Monkey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monkey.swift; sourceTree = "<group>"; };
+		C85225FC1BB5715D000589DA /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		C85225FD1BB5715D000589DA /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		C85225FE1BB5715D000589DA /* Trace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trace.swift; sourceTree = "<group>"; };
+		C85225FE1BB5715D000589DA /* APIClient+Tracing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIClient+Tracing.swift"; sourceTree = "<group>"; };
 		C85226231BB571CF000589DA /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		C85226251BB571CF000589DA /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		C85226261BB571CF000589DA /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C85226271BB571CF000589DA /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		C8DA6E451C3E905F009C231B /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,12 +81,13 @@
 			children = (
 				C85225F61BB5715D000589DA /* APICall.swift */,
 				C85225F71BB5715D000589DA /* APIClient.swift */,
+				C85225FE1BB5715D000589DA /* APIClient+Tracing.swift */,
 				C85225F81BB5715D000589DA /* APICredentials.swift */,
 				C85225F91BB5715D000589DA /* APIResponse.swift */,
 				C85225FA1BB5715D000589DA /* APISession.swift */,
-				C85225FC1BB5715D000589DA /* Monkey.swift */,
+				C85225FC1BB5715D000589DA /* Types.swift */,
 				C85225FD1BB5715D000589DA /* Queue.swift */,
-				C85225FE1BB5715D000589DA /* Trace.swift */,
+				C8DA6E451C3E905F009C231B /* APIError.swift */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -181,11 +184,12 @@
 				C85226051BB5715D000589DA /* APISession.swift in Sources */,
 				C85226081BB5715D000589DA /* Queue.swift in Sources */,
 				C85226031BB5715D000589DA /* APICredentials.swift in Sources */,
-				C85226071BB5715D000589DA /* Monkey.swift in Sources */,
+				C85226071BB5715D000589DA /* Types.swift in Sources */,
 				C85226041BB5715D000589DA /* APIResponse.swift in Sources */,
-				C85226091BB5715D000589DA /* Trace.swift in Sources */,
+				C85226091BB5715D000589DA /* APIClient+Tracing.swift in Sources */,
 				C85226011BB5715D000589DA /* APICall.swift in Sources */,
 				C85226021BB5715D000589DA /* APIClient.swift in Sources */,
+				C8DA6E461C3E905F009C231B /* APIError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

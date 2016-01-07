@@ -4,12 +4,12 @@ import SwiftyJSON
 extension APIClient {
 
   func traceRequest(request: NSURLRequest) {
-    if Monkey.traceLevel == .None {
+    if traceLevel == .None {
       return
     }
 
     print("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
-    if Monkey.traceLevel == .All {
+    if traceLevel == .All {
       if let headers = request.allHTTPHeaderFields {
         for (header, value) in headers {
           print("API      \(header): \(value)")
@@ -25,19 +25,19 @@ extension APIClient {
   }
 
   func traceSuccess(status: Int, json: JSON) {
-    if Monkey.traceLevel.lowerThan(.RequestsAndStatuses) {
+    if traceLevel < .RequestsAndStatuses {
       return
     }
 
     print("API      Success (\(status))")
 
-    if Monkey.traceLevel == .All && json.type != .Null {
+    if traceLevel == .All && json.type != .Null {
       print("API      \(json.debugDescription)")
     }
   }
 
   func traceError(status: Int, message: String?) {
-    if Monkey.traceLevel.lowerThan(.RequestsAndStatuses) {
+    if traceLevel < .RequestsAndStatuses {
       return
     }
 
