@@ -7,7 +7,7 @@ public enum APIError: Int, ErrorType {
 
   /// Data was not formatted properly (e.g. JSON was expected). Could be caused by bad connection,
   /// so treated as `NotReachable`.
-  case InvalidData      = 999
+  case InvalidData      = 10
 
   /// Client errors
   case NotAuthorized    = 401

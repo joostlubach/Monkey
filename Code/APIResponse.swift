@@ -45,7 +45,7 @@ public class APIResponse {
   func resolve() {
     status = httpResponse?.statusCode ?? 0
 
-    if let data = self.data {
+    if let data = self.data where data.length > 0 {
       do {
         let jsonDict: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
         json = JSON(jsonDict)
