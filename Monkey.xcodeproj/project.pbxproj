@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C835A2DB1C47BC060009B482 /* APIClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C835A2DA1C47BC060009B482 /* APIClientDelegate.swift */; };
 		C85226011BB5715D000589DA /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F61BB5715D000589DA /* APICall.swift */; };
 		C85226021BB5715D000589DA /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F71BB5715D000589DA /* APIClient.swift */; };
 		C85226031BB5715D000589DA /* APICredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85225F81BB5715D000589DA /* APICredentials.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C835A2DA1C47BC060009B482 /* APIClientDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClientDelegate.swift; sourceTree = "<group>"; };
 		C85225E81BB5710F000589DA /* Monkey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Monkey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C85225F41BB57151000589DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C85225F61BB5715D000589DA /* APICall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			children = (
 				C85225F61BB5715D000589DA /* APICall.swift */,
 				C85225F71BB5715D000589DA /* APIClient.swift */,
+				C835A2DA1C47BC060009B482 /* APIClientDelegate.swift */,
 				C85225FE1BB5715D000589DA /* APIClient+Tracing.swift */,
 				C85225F81BB5715D000589DA /* APICredentials.swift */,
 				C85225F91BB5715D000589DA /* APIResponse.swift */,
@@ -141,7 +144,7 @@
 		C85225DF1BB5710F000589DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Mos Dev";
 				TargetAttributes = {
 					C85225E71BB5710F000589DA = {
@@ -186,6 +189,7 @@
 				C85226031BB5715D000589DA /* APICredentials.swift in Sources */,
 				C85226071BB5715D000589DA /* Types.swift in Sources */,
 				C85226041BB5715D000589DA /* APIResponse.swift in Sources */,
+				C835A2DB1C47BC060009B482 /* APIClientDelegate.swift in Sources */,
 				C85226091BB5715D000589DA /* APIClient+Tracing.swift in Sources */,
 				C85226011BB5715D000589DA /* APICall.swift in Sources */,
 				C85226021BB5715D000589DA /* APIClient.swift in Sources */,
@@ -288,13 +292,10 @@
 		C85225F11BB5710F000589DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				BITCODE_GENERATION_MODE = marker;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -312,13 +313,10 @@
 		C85225F21BB5710F000589DA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				BITCODE_GENERATION_MODE = bitcode;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",

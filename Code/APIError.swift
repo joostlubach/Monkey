@@ -1,6 +1,52 @@
 import Foundation
 
-public enum APIError: Int, ErrorType {
+public struct APIError: ErrorType {
+
+  init(type: APIErrorType, status: Int, message: String?) {
+    self.type = type
+    self.status = status
+    self.message = message
+  }
+
+  init(type: APIErrorType, status: Int) {
+    self.type = type
+    self.status = status
+    self.message = nil
+  }
+
+  init(type: APIErrorType) {
+    self.type = type
+    self.status = nil
+    self.message = nil
+  }
+
+  public let type: APIErrorType
+  public let status: Int?
+  public let message: String?
+
+  internal(set) public var underlyingError: NSError?
+
+}
+
+extension APIError: CustomStringConvertible, CustomDebugStringConvertible {
+
+  public var description: String {
+    let typeDesc = status != nil ? "\(status!) \(type.description)" : type.description
+
+    if let message = message {
+      return "Error (\(typeDesc)) \(message)"
+    } else {
+      return "Error (\(typeDesc))"
+    }
+  }
+
+  public var debugDescription: String {
+    return description
+  }
+
+}
+
+public enum APIErrorType: Int {
 
   /// Status 0
   case NotReachable     = 0
@@ -36,7 +82,7 @@ public enum APIError: Int, ErrorType {
 
 }
 
-extension APIError: CustomStringConvertible, CustomDebugStringConvertible {
+extension APIErrorType: CustomStringConvertible, CustomDebugStringConvertible {
 
   public var description: String {
     switch self {

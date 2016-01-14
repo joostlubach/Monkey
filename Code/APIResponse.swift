@@ -17,7 +17,6 @@ public class APIResponse {
   public private(set) var status = 0
   public private(set) var error: APIError?
   public private(set) var underlyingError: NSError?
-  public private(set) var underlyingErrorMessage: String?
 
   var success: Bool {
     return error == nil
@@ -28,15 +27,33 @@ public class APIResponse {
 
   // MARK: Handlers
 
+  public func whenSuccess(@noescape block: (APIResponse) -> Void) {
+    if success {
+      block(self)
+    }
+  }
+
   public func whenData(@noescape block: (NSData) -> Void) {
-    if let data = self.data {
+    if let data = data {
       block(data)
     }
   }
 
   public func whenJSON(@noescape block: (JSON) -> Void) {
-    if let json = self.json {
+    if let json = json {
       block(json)
+    }
+  }
+
+  public func whenError(@noescape block: (APIError) -> Void) {
+    if let error = error {
+      block(error)
+    }
+  }
+
+  public func whenErrorOfType(errorType: APIErrorType, @noescape block: (APIError) -> Void) {
+    if let error = error where error.type == errorType {
+      block(error)
     }
   }
 
@@ -53,9 +70,8 @@ public class APIResponse {
         json = nil
 
         // Mark an invalid data error. This might be overridden later if there is a specific HTTP error.
-        self.error = .InvalidData
-        underlyingError = error
-        underlyingErrorMessage = error.localizedDescription
+        self.error = APIError(type: .InvalidData)
+        self.error!.underlyingError = error
       }
     }
 
@@ -70,22 +86,24 @@ public class APIResponse {
     case 400..<500: handleError(.OtherClientError)
     default: handleServerError()
     }
+
+    if let error = error {
+      client?.traceError(error)
+    }
   }
 
   private func handleSuccess() {
     client?.traceSuccess(status, json: json ?? JSON.null)
   }
 
-  private func handleError(error: APIError) {
-    self.error = error
-    underlyingErrorMessage = json?["error"].string
-    client?.traceError(status, message: underlyingErrorMessage ?? error.description)
+  private func handleError(errorType: APIErrorType) {
+    let message = json?["error"].string
+    error = APIError(type: errorType, status: status, message: message)
   }
 
   private func handleServerError() {
-    error = .ServerError
-    underlyingErrorMessage = json?["error"].string
-    client?.traceError(status, message: underlyingErrorMessage ?? error!.description)
+    let message = json?["error"].string
+    error = APIError(type: .ServerError, status: status, message: message)
 
     // Dump the full server data.
     if let data = self.data, let output = NSString(data: data, encoding: NSUTF8StringEncoding) {

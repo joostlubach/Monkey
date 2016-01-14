@@ -13,6 +13,9 @@ public class APIClient {
     self.storesSession = storesSession
   }
 
+  /// A delegate for the client.
+  public var delegate: APIClientDelegate?
+
   /// The base URL for the API. All paths will be appended to this URL.
   public let baseURL: NSURL
 
@@ -120,15 +123,6 @@ public class APIClient {
 
   // MARK: Authentication
 
-  /// A handler for authentication. This is called either when `authenticate()` is called (or when `ensureAuthenticated()` is called
-  /// and the client does not have a session, or when any API (authenticated) request encounters a 401.
-  ///
-  /// This handler is supposed to return a future with an API session. The future may fail if the authentication fails. This failure
-  /// is logged, but not displayed to the user.
-  ///
-  /// In case any error occurs, you should handle this and return a successful future with a nil argument.
-  public var authenticationHandler: ((APIClient) -> Future<Void, NoError>)?
-
   /// Determines whether the client is currently authenticated.
   public var authenticated: Bool {
     return session != nil && !(session!.expired)
@@ -148,13 +142,12 @@ public class APIClient {
 
   /// Authenticates this client using the authentication handler.
   public func authenticate() -> Future<Bool, NoError> {
-    if let block = authenticationHandler {
-      return block(self).map {
-        return self.session != nil
+    if let delegate = delegate {
+      return delegate.authenticateClient(self).map { _ in
+        // We have successfully authenticated if the handler has set the session object.
+        self.session != nil
       }
     } else {
-      // Pretend to have been authenticated.
-      self.session = nil
       return Future(value: false)
     }
   }
@@ -198,25 +191,7 @@ public class APIClient {
 
   // MARK: Requests
 
-  public typealias PreparationBlock = (APICall) -> Void
-
-  private var preparationBlocks = [PreparationBlock]()
-
   private var queue = OperationQueue()
-
-  /// Adds a handler to be executed on all requests.
-  ///
-  /// Example
-  ///   The following example adds a default failure response:
-  ///
-  ///     client.prepare { call in
-  ///       call.responseError { error in
-  ///         displayError(error)
-  ///       }
-  ///     }
-  public func prepare(block: PreparationBlock) {
-    preparationBlocks.append(block)
-  }
 
   private func buildMutableURLRequest(method: Alamofire.Method, path: String) -> NSMutableURLRequest {
     let url = baseURL.URLByAppendingPathComponent(path)
@@ -255,10 +230,7 @@ public class APIClient {
 
   private func prepareCall(call: APICall) {
     addDefaultHandlers(call)
-
-    for block in preparationBlocks {
-      block(call)
-    }
+    delegate?.client(self, willEnqueueCall: call)
   }
 
   private func addDefaultHandlers(call: APICall) {

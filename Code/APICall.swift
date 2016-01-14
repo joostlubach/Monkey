@@ -67,18 +67,21 @@ public class APICall: Operation {
   /// Adds a response handler, which is called upon success.
   public func responseSuccess(handler: (APIResponse) -> Void) {
     response { response in
-      if response.success {
-        handler(response)
-      }
+      response.whenSuccess(handler)
     }
   }
   
   /// Adds a response handler, which is called upon error.
-  public func responseError(handler: (APIResponse, APIError) -> Void) {
+  public func responseError(handler: (APIError) -> Void) {
     response { response in
-      if let error = response.error {
-        handler(response, error)
-      }
+      response.whenError(handler)
+    }
+  }
+
+  /// Adds a response handler, which is called upon error of a specific type.
+  public func responseErrorOfType(errorType: APIErrorType, handler: (APIError) -> Void) {
+    response { response in
+      response.whenErrorOfType(errorType, block: handler)
     }
   }
 
@@ -107,7 +110,7 @@ public class APICall: Operation {
       if let json = response.json {
         promise.success(json)
       } else {
-        promise.failure(.InvalidData)
+        promise.failure(APIError(type: .InvalidData))
       }
     }
     self.promise.future.onFailure { error in
@@ -178,7 +181,7 @@ public class APICall: Operation {
     let response = APIResponse(client: client, httpResponse: httpResponse, data: data)
     self.response = response
 
-    if authenticate && response.error == .NotAuthorized {
+    if authenticate && response.error?.type == .NotAuthorized {
 
       // Perform an authenticate & retry.
       if retryCount < 3 {

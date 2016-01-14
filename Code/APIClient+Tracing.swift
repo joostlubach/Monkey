@@ -36,16 +36,12 @@ extension APIClient {
     }
   }
 
-  func traceError(status: Int, message: String?) {
+  func traceError(error: APIError) {
     if traceLevel < .RequestsAndStatuses {
       return
     }
 
-    if let msg = message {
-      print("API      Error (\(status)) \(msg)")
-    } else {
-      print("API      Error (\(status))")
-    }
+    print("API      \(error)")
   }
 
   func trace(message: String?) {
