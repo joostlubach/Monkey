@@ -1,4 +1,5 @@
 import Foundation
+import SwiftyJSON
 
 public struct APIError: ErrorType {
 
@@ -24,6 +25,8 @@ public struct APIError: ErrorType {
   public let status: Int?
   public let message: String?
 
+  internal(set) public var json: JSON?
+  internal(set) public var data: NSData?
   internal(set) public var underlyingError: NSError?
 
 }

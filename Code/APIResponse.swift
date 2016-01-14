@@ -99,11 +99,15 @@ public class APIResponse {
   private func handleError(errorType: APIErrorType) {
     let message = json?["error"].string
     error = APIError(type: errorType, status: status, message: message)
+    error!.json = json
+    error!.data = data
   }
 
   private func handleServerError() {
     let message = json?["error"].string
     error = APIError(type: .ServerError, status: status, message: message)
+    error!.json = json
+    error!.data = data
 
     // Dump the full server data.
     if let data = self.data, let output = NSString(data: data, encoding: NSUTF8StringEncoding) {
