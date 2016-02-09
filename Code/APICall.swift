@@ -18,12 +18,15 @@ public class APICall: Operation {
   */
   init(client: APIClient, request: NSMutableURLRequest, authenticate: Bool = true) {
     self.client = client
+    self.alamofireManager = client.alamofireManager
     self.authenticate = authenticate
     self.request = request
   }
 
   /// The client making the request.
   public unowned let client: APIClient
+
+  private let alamofireManager: Alamofire.Manager
 
   public let request: NSMutableURLRequest
 
@@ -173,7 +176,7 @@ public class APICall: Operation {
   }
 
   private func buildAlamofireRequest() -> Alamofire.Request {
-    return client.alamofireManager.request(request)
+    return alamofireManager.request(request)
   }
 
   private func handleResponse(httpResponse: NSHTTPURLResponse?, data: NSData?, error: NSError?) {

@@ -20,7 +20,15 @@ public class APIClient {
   public let baseURL: NSURL
 
   /// The Alamofire manager to use for this client.
-  public var alamofireManager = Alamofire.Manager.sharedInstance
+  public var buildAlamofireManager: (() -> Alamofire.Manager)?
+
+  public var alamofireManager: Alamofire.Manager {
+    if let block = buildAlamofireManager {
+      return block()
+    } else {
+      return Alamofire.Manager.sharedInstance
+    }
+  }
 
   /// The trace level for this client.
   public var traceLevel: TraceLevel = .RequestsAndStatuses
