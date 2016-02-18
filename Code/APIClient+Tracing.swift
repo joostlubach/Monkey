@@ -2,23 +2,23 @@ import Foundation
 import SwiftyJSON
 
 extension APIClient {
-
+  
   func traceRequest(request: NSURLRequest) {
     if traceLevel == .None {
       return
     }
 
-    print("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
+    trace("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
     if traceLevel == .All {
       if let headers = request.allHTTPHeaderFields {
         for (header, value) in headers {
-          print("API      \(header): \(value)")
+          trace("API      \(header): \(value)")
         }
       }
 
       if let body = request.HTTPBody {
         if let bodyString = NSString(data: body, encoding: NSUTF8StringEncoding) {
-          print("API      Body: \(bodyString)")
+          trace("API      Body: \(bodyString)")
         }
       }
     }
@@ -29,24 +29,24 @@ extension APIClient {
       return
     }
 
-    print("API      Success (\(status))")
+    trace("API      Success (\(status))")
 
     if traceLevel == .All && json.type != .Null {
-      print("API      \(json.debugDescription)")
+      trace("API      \(json.debugDescription)")
     }
-  }
+  } 
 
   func traceError(error: APIError) {
     if traceLevel < .RequestsAndStatuses {
       return
     }
 
-    print("API      \(error)")
+    trace("API      \(error)")
   }
 
   func trace(message: String?) {
     if let msg = message {
-      print("API      \(msg)")
+      self.traceHandler(format: msg, args: [], file: "APIClient", function: "?", line: 0)
     }
   }
   

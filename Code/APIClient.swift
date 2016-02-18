@@ -3,6 +3,10 @@ import Alamofire
 import BrightFutures
 import SwiftyJSON
 
+func printToConsole(format: String = "", _ args:[CVarArgType] = [], file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+  print(format)
+}
+
 public class APIClient {
 
   /// Initializes the API client.
@@ -11,6 +15,7 @@ public class APIClient {
   public init(baseURL: NSURL, storesSession: Bool = true) {
     self.baseURL = baseURL
     self.storesSession = storesSession
+    self.traceHandler = defaultTraceHandler
   }
 
   /// A delegate for the client.
@@ -32,7 +37,13 @@ public class APIClient {
 
   /// The trace level for this client.
   public var traceLevel: TraceLevel = .RequestsAndStatuses
+  
+  /// The default trace handler will print to console.
+  public let defaultTraceHandler = printToConsole
 
+  /// Set this trace handler so you log, for example, to Crashlytics.
+  public var traceHandler: (format: String, args: [CVarArgType], file: String, function: String, line: Int) -> ()!
+  
   /// Determines whether the client stores its session in the user defaults.
   public var storesSession: Bool {
     didSet {
