@@ -32,7 +32,14 @@ extension APIClient {
     trace("API      Success (\(status))")
 
     if traceLevel == .All && json.type != .Null {
-      trace("API      \(json.debugDescription)")
+      var msg = json.debugDescription
+      
+      if let array = json.array {
+        if array.count == 0 {
+          msg = "[]" // Empty arrays screwed up logging for some reason
+        }
+      }
+      trace("API      JSON = \(msg)")
     }
   } 
 
@@ -41,7 +48,7 @@ extension APIClient {
       return
     }
 
-    trace("API      \(error)")
+    trace("API      Error, JSON = \(error)")
   }
 
   func trace(message: String?) {
