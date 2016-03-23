@@ -1,3 +1,4 @@
 github "Alamofire/Alamofire" ~> 3.0
 github "SwiftyJSON/SwiftyJSON" ~> 2.0
 github "Thomvis/BrightFutures" ~> 3.0
+github "antitypical/Result" "master"

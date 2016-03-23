@@ -1,4 +1,4 @@
-github "Alamofire/Alamofire" "3.1.2"
-github "antitypical/Result" "0.6.0-beta.6"
-github "SwiftyJSON/SwiftyJSON" "2.3.1"
-github "Thomvis/BrightFutures" "v3.1.2"
+github "Alamofire/Alamofire" "3.2.1"
+github "antitypical/Result" "89653c28708641d428b447bb5f3cbc69173ab8cb"
+github "SwiftyJSON/SwiftyJSON" "2.3.3"
+github "Thomvis/BrightFutures" "v3.3.0"
