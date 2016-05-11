@@ -3,7 +3,7 @@ import Alamofire
 import BrightFutures
 import SwiftyJSON
 
-func printToConsole(format: String = "", _ args:[CVarArgType] = [], file: String = __FILE__, function: String = __FUNCTION__, line: Int = __LINE__) {
+func printToConsole(format: String = "", _ args:[CVarArgType] = [], file: String = #file, function: String = #function, line: Int = #line) {
   print(format)
 }
 
