@@ -8,8 +8,10 @@ BrightFutures implements proven [functional concepts](http://en.wikipedia.org/wi
 The goal of BrightFutures is to be *the* idiomatic Swift implementation of futures and promises.
 Our Big Hairy Audacious Goal (BHAG) is to be copy-pasted into the Swift standard library.
 
+The stability of BrightFutures has been proven through extensive use in production. It is currently being used in several apps, with a combined total of almost 500k monthly active users. If you use BrightFutures in production, we'd love to hear about it!
+
 ## Latest news
-[![CircleCI build status badge](https://img.shields.io/circleci/project/Thomvis/BrightFutures/master.svg)](https://circleci.com/gh/Thomvis/BrightFutures) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods version](https://img.shields.io/cocoapods/v/BrightFutures.svg)](https://cocoapods.org/pods/BrightFutures) [![MIT License](https://img.shields.io/cocoapods/l/BrightFutures.svg)](LICENSE) ![Platform iOS OS X](https://img.shields.io/cocoapods/p/BrightFutures.svg)
+[![Travis CI build status badge](https://travis-ci.org/Thomvis/BrightFutures.svg?branch=master)](https://travis-ci.org/Thomvis/BrightFutures) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![CocoaPods version](https://img.shields.io/cocoapods/v/BrightFutures.svg)](https://cocoapods.org/pods/BrightFutures) [![MIT License](https://img.shields.io/cocoapods/l/BrightFutures.svg)](LICENSE) ![Platform iOS OS X](https://img.shields.io/cocoapods/p/BrightFutures.svg)
 
 BrightFutures 3.0 is now available! Major parts of the framework have been rewritten for Swift 2 in order to leverage its power and provide the best compatibility. Please check the [Migration guide](Documentation/Migration_3.0.md) for help on how to migrate your project to BrightFutures 3.0.
 
