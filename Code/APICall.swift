@@ -27,16 +27,16 @@ open class APICall: Operation {
 
   open let request: NSMutableURLRequest
 
-  open fileprivate(set) var status = OperationStatus.ready
+  open private(set) var status = OperationStatus.ready
 
   /// The Alamofire request backing this operation.
   var alamofireRequest: Alamofire.Request?
 
   /// The current try count for this operation.
-  open fileprivate(set) var retryCount: Int = 1
+  open private(set) var retryCount: Int = 1
 
   /// The response. Only available when the operation is complete.
-  open fileprivate(set) var response: APIResponse?
+  open private(set) var response: APIResponse?
 
   /// Can be set to a block which will receive upload/download progress.
   open var progressBlock: ProgressBlock?
@@ -49,10 +49,10 @@ open class APICall: Operation {
   typealias ResponseHandler = (APIResponse) -> Void
   typealias FinallyHandler = () -> Void
 
-  fileprivate var responseHandlers = [ResponseHandler]()
-  fileprivate var finallyHandlers = [FinallyHandler]()
+  private var responseHandlers = [ResponseHandler]()
+  private var finallyHandlers = [FinallyHandler]()
 
-  fileprivate let promise = Promise<APIResponse, APIError>()
+  private let promise = Promise<APIResponse, APIError>()
 
   /// Adds a response handler, which is called upon any result (success or failure).
   open func response(_ handler: @escaping (APIResponse) -> Void) {
@@ -126,7 +126,7 @@ open class APICall: Operation {
   open var authenticate: Bool = true
 
   /// Authenticates the current request.
-  fileprivate func authenticateRequest() {
+  private func authenticateRequest() {
     client.session?.authenticateRequest(request)
   }
 
@@ -197,11 +197,11 @@ open class APICall: Operation {
     }
   }
 
-  fileprivate func buildAlamofireRequest() -> Alamofire.Request {
+  func buildAlamofireRequest() -> Alamofire.Request {
     return client.alamofireManager.request(request as URLRequest)
   }
 
-  fileprivate func handleResponse(_ httpResponse: HTTPURLResponse?, data: Data?, error: Error?) {
+  private func handleResponse(_ httpResponse: HTTPURLResponse?, data: Data?, error: Error?) {
     // Store the response and handle it.
     let response = APIResponse(client: client, httpResponse: httpResponse, data: data)
     self.response = response
@@ -247,7 +247,7 @@ open class APICall: Operation {
 
 open class APIUpload: APICall {
 
-  fileprivate override func buildAlamofireRequest() -> Alamofire.Request {
+  override func buildAlamofireRequest() -> Alamofire.Request {
     return Alamofire.SessionManager.default.upload(request.httpBody!, with: request as URLRequest)
   }
 

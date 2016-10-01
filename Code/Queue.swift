@@ -39,10 +39,10 @@ class OperationQueue {
   var status = QueueStatus.stopped
 
   /// The queued operations.
-  fileprivate(set) var queued = [Operation]()
+  private(set) var queued = [Operation]()
 
   /// The currently running operations.
-  fileprivate(set) var running = [Operation]()
+  private(set) var running = [Operation]()
 
   var count: Int {
     return queued.count + running.count
@@ -106,7 +106,7 @@ class OperationQueue {
   }
 
   /// Starts the next operation in the queue.
-  fileprivate func next() {
+  private func next() {
     if status == .stopped {
       return
     }
@@ -144,7 +144,7 @@ class OperationQueue {
   }
 
   /// Called when an operation is completed.
-  fileprivate func operationComplete(_ operation: Operation) {
+  private func operationComplete(_ operation: Operation) {
     for idx in 0..<running.count {
       if running[idx] === operation {
         running.remove(at: idx)

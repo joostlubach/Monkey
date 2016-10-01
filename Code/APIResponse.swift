@@ -14,16 +14,16 @@ open class APIResponse {
   open weak var client: APIClient?
   open let httpResponse: HTTPURLResponse?
 
-  open fileprivate(set) var status = 0
-  open fileprivate(set) var error: APIError?
-  open fileprivate(set) var underlyingError: NSError?
+  open private(set) var status = 0
+  open private(set) var error: APIError?
+  open private(set) var underlyingError: NSError?
 
   var success: Bool {
     return error == nil
   }
 
-  open fileprivate(set) var data: Data?
-  open fileprivate(set) var json: JSON?
+  open private(set) var data: Data?
+  open private(set) var json: JSON?
 
   // MARK: Handlers
 
@@ -92,18 +92,18 @@ open class APIResponse {
     }
   }
 
-  fileprivate func handleSuccess() {
+  private func handleSuccess() {
     client?.traceSuccess(status, json: json ?? JSON.null)
   }
 
-  fileprivate func handleError(_ errorType: APIErrorType) {
+  private func handleError(_ errorType: APIErrorType) {
     let message = json?["error"].string
     error = APIError(type: errorType, status: status, message: message)
     error!.json = json
     error!.data = data
   }
 
-  fileprivate func handleServerError() {
+  private func handleServerError() {
     let message = json?["error"].string
     error = APIError(type: .ServerError, status: status, message: message)
     error!.json = json

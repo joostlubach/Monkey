@@ -37,7 +37,7 @@ open class APIClient {
     }
   }
 
-  fileprivate var _session: APISession?
+  private var _session: APISession?
 
   /// An API session. This may store some token so that the API is authenticated.
   open var session: APISession? {
@@ -60,14 +60,14 @@ open class APIClient {
 
       let notificationCenter = NotificationCenter.default
       if _session != nil {
-        notificationCenter.post(name: Notification.Name(rawValue: Monkey.APIClientDidAuthenticateNotification), object: self)
+        notificationCenter.post(name: Monkey.APIClientDidAuthenticateNotification, object: self)
       } else {
-        notificationCenter.post(name: Notification.Name(rawValue: Monkey.APIClientDidUnauthenticateNotification), object: self)
+        notificationCenter.post(name: Monkey.APIClientDidUnauthenticateNotification, object: self)
       }
     }
   }
 
-  fileprivate func readSessionFromUserDefaults() -> APISession? {
+  private func readSessionFromUserDefaults() -> APISession? {
     let userDefaults = UserDefaults.standard
 
     if let data = userDefaults.data(forKey: SessionKey) {
@@ -77,7 +77,7 @@ open class APIClient {
     }
   }
 
-  fileprivate func writeSessionToUserDefaults(_ sessionOrNil: APISession?) {
+  private func writeSessionToUserDefaults(_ sessionOrNil: APISession?) {
     let userDefaults = UserDefaults.standard
 
     if let session = sessionOrNil {
@@ -92,30 +92,35 @@ open class APIClient {
 
   // MARK: Interface
 
-  open func get(_ path: String, parameters: [String: AnyObject]? = nil, authenticate: Bool = true) -> APICall {
+  @discardableResult
+  open func get(_ path: String, parameters: [String: Any]? = nil, authenticate: Bool = true) -> APICall {
     let call = buildCallWithMethod(.get, path: path, parameters: parameters, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
+  @discardableResult
   open func post(_ path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
     let call = buildCallWithMethod(.post, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
+  @discardableResult
   open func put(_ path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
     let call = buildCallWithMethod(.put, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
+  @discardableResult
   open func delete(_ path: String, authenticate: Bool = true) -> APICall {
     let call = buildCallWithMethod(.delete, path: path, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
+  @discardableResult
   open func upload(_ path: String, data: Data, method: Alamofire.HTTPMethod = .post, authenticate: Bool = true) -> APICall {
     let call = buildUploadWithMethod(method, path: path, data: data, authenticate: authenticate)
     queue.enqueue(call)
@@ -129,8 +134,8 @@ open class APIClient {
     return session != nil && !(session!.expired)
   }
 
-  fileprivate var waitingForAuthentication = [APICall]()
-  fileprivate var authenticationFuture: Future<Void, NoError>?
+  private var waitingForAuthentication = [APICall]()
+  private var authenticationFuture: Future<Void, NoError>?
 
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
   open func ensureAuthenticated() -> Future<Bool, NoError> {
@@ -142,6 +147,7 @@ open class APIClient {
   }
 
   /// Authenticates this client using the authentication handler.
+  @discardableResult
   open func authenticate() -> Future<Bool, NoError> {
     if let delegate = delegate {
       return delegate.authenticateClient(self).map { _ in
@@ -193,9 +199,9 @@ open class APIClient {
 
   // MARK: Requests
 
-  fileprivate var queue = OperationQueue()
+  private var queue = OperationQueue()
 
-  fileprivate func buildMutableURLRequest(_ method: Alamofire.HTTPMethod, path: String) -> NSMutableURLRequest {
+  private func buildMutableURLRequest(_ method: Alamofire.HTTPMethod, path: String) -> MutableURLRequest {
     let url = baseURL.appendingPathComponent(path)
 
     let urlRequest = NSMutableURLRequest(url: url)
@@ -206,14 +212,14 @@ open class APIClient {
     return urlRequest
   }
 
-  fileprivate func buildCallWithMethod(_ method: Alamofire.HTTPMethod, path: String, parameters: [String: AnyObject]? = nil, json: JSON? = nil, authenticate: Bool = true) -> APICall {
+  private func buildCallWithMethod(_ method: Alamofire.HTTPMethod, path: String, parameters: [String: Any]? = nil, json: JSON? = nil, authenticate: Bool = true) -> APICall {
     var request = buildMutableURLRequest(method, path: path)
 
     // Use Alamofire's parameter encoding to encode the parameters.
     if let params = parameters, let encodedRequest = try? URLEncoding.default.encode(request as URLRequest, with: params) {
-      request = (encodedRequest as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+      request = (encodedRequest as NSURLRequest).mutableCopy() as! MutableURLRequest
     } else if let js = json, let encodedRequest = try? JSONEncoding.default.encode(request as URLRequest, with: js.dictionaryObject) {
-      request = (encodedRequest as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+      request = (encodedRequest as NSURLRequest).mutableCopy() as! MutableURLRequest
     }
 
     let call = APICall(client: self, request: request, authenticate: authenticate)
@@ -221,7 +227,7 @@ open class APIClient {
     return call
   }
 
-  fileprivate func buildUploadWithMethod(_ method: Alamofire.HTTPMethod, path: String, data: Data, authenticate: Bool = true) -> APIUpload {
+  private func buildUploadWithMethod(_ method: Alamofire.HTTPMethod, path: String, data: Data, authenticate: Bool = true) -> APIUpload {
     let request = buildMutableURLRequest(method, path: path)
     request.httpBody = data
 
@@ -230,12 +236,12 @@ open class APIClient {
     return call
   }
 
-  fileprivate func prepareCall(_ call: APICall) {
+  private func prepareCall(_ call: APICall) {
     addDefaultHandlers(call)
     delegate?.client(self, willEnqueueCall: call)
   }
 
-  fileprivate func addDefaultHandlers(_ call: APICall) {
+  private func addDefaultHandlers(_ call: APICall) {
     // Show/hide network activity indicator.
     UIApplication.shared.isNetworkActivityIndicatorVisible = true
     call.response { [weak self] _ in

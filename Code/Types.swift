@@ -1,7 +1,7 @@
 import Foundation
 
-public let APIClientDidAuthenticateNotification = "co.mosdev.Monkey.APIClientDidAuthenticate"
-public let APIClientDidUnauthenticateNotification = "co.mosdev.Monkey.APIClientDidAuthenticate"
+public let APIClientDidAuthenticateNotification = Notification.Name("co.mosdev.Monkey.APIClientDidAuthenticate")
+public let APIClientDidUnauthenticateNotification = Notification.Name("co.mosdev.Monkey.APIClientDidAuthenticate")
 
 public enum TraceLevel: Int {
   case none                = 0
