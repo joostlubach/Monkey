@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct APIError: ErrorType {
+public struct APIError: Error {
 
   init(type: APIErrorType, status: Int, message: String?) {
     self.type = type
@@ -26,7 +26,7 @@ public struct APIError: ErrorType {
   public let message: String?
 
   internal(set) public var json: JSON?
-  internal(set) public var data: NSData?
+  internal(set) public var data: Data?
   internal(set) public var underlyingError: NSError?
 
 }
@@ -52,18 +52,18 @@ extension APIError: CustomStringConvertible, CustomDebugStringConvertible {
 public enum APIErrorType: Int {
 
   /// Status 0
-  case NotReachable     = 0
+  case notReachable     = 0
 
   /// Data was not formatted properly (e.g. JSON was expected). Could be caused by bad connection,
   /// so treated as `NotReachable`.
-  case InvalidData      = 10
+  case invalidData      = 10
 
   /// Client errors
-  case NotAuthorized    = 401
-  case Forbidden        = 403
-  case NotFound         = 404
-  case BadRequest       = 400
-  case OtherClientError = 499
+  case notAuthorized    = 401
+  case forbidden        = 403
+  case notFound         = 404
+  case badRequest       = 400
+  case otherClientError = 499
 
   /// Server error
   case ServerError      = 500
@@ -89,14 +89,14 @@ extension APIErrorType: CustomStringConvertible, CustomDebugStringConvertible {
 
   public var description: String {
     switch self {
-    case .NotReachable:     return "Not reachable"
-    case .InvalidData:      return "Invalid data"
+    case .notReachable:     return "Not reachable"
+    case .invalidData:      return "Invalid data"
 
-    case .BadRequest:       return "Bad request"
-    case .NotAuthorized:    return "Not authorized"
-    case .Forbidden:        return "Forbidden"
-    case .NotFound:         return "Not Found"
-    case .OtherClientError: return "Other client error"
+    case .badRequest:       return "Bad request"
+    case .notAuthorized:    return "Not authorized"
+    case .forbidden:        return "Forbidden"
+    case .notFound:         return "Not Found"
+    case .otherClientError: return "Other client error"
 
     case .ServerError:      return "Server error"
     }

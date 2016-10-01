@@ -3,48 +3,48 @@ import SwiftyJSON
 
 extension APIClient {
 
-  func traceRequest(request: NSURLRequest) {
-    if traceLevel == .None {
+  func traceRequest(_ request: URLRequest) {
+    if traceLevel == .none {
       return
     }
 
-    print("API ---> HTTP \(request.HTTPMethod!) \(request.URL!)")
-    if traceLevel == .All {
+    print("API ---> HTTP \(request.httpMethod!) \(request.url!)")
+    if traceLevel == .all {
       if let headers = request.allHTTPHeaderFields {
         for (header, value) in headers {
           print("API      \(header): \(value)")
         }
       }
 
-      if let body = request.HTTPBody {
-        if let bodyString = NSString(data: body, encoding: NSUTF8StringEncoding) {
+      if let body = request.httpBody {
+        if let bodyString = NSString(data: body, encoding: String.Encoding.utf8.rawValue) {
           print("API      Body: \(bodyString)")
         }
       }
     }
   }
 
-  func traceSuccess(status: Int, json: JSON) {
-    if traceLevel < .RequestsAndStatuses {
+  func traceSuccess(_ status: Int, json: JSON) {
+    if traceLevel < .requestsAndStatuses {
       return
     }
 
     print("API      Success (\(status))")
 
-    if traceLevel == .All && json.type != .Null {
+    if traceLevel == TraceLevel.all && json.type != SwiftyJSON.Type.null {
       print("API      \(json.debugDescription)")
     }
   }
 
-  func traceError(error: APIError) {
-    if traceLevel < .RequestsAndStatuses {
+  func traceError(_ error: APIError) {
+    if traceLevel < .requestsAndStatuses {
       return
     }
 
     print("API      \(error)")
   }
 
-  func trace(message: String?) {
+  func trace(_ message: String?) {
     if let msg = message {
       print("API      \(msg)")
     }

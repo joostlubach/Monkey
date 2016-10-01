@@ -3,44 +3,44 @@ import Foundation
 public protocol APISession: NSCoding {
 
   var expired: Bool { get }
-  func authenticateRequest(request: NSMutableURLRequest)
+  func authenticateRequest(_ request: NSMutableURLRequest)
 
 }
 
-public class BearerTokenAPISession: NSObject, APISession, NSCoding {
+open class BearerTokenAPISession: NSObject, APISession, NSCoding {
 
-  public init(token: String, expirationDate: NSDate? = nil) {
+  public init(token: String, expirationDate: Date? = nil) {
     self.token = token
     self.expirationDate = expirationDate
   }
   required convenience public init?(coder: NSCoder) {
-    let token = coder.decodeObjectForKey("token") as! String
-    let expirationDate = coder.decodeObjectForKey("expirationDate") as! NSDate?
+    let token = coder.decodeObject(forKey: "token") as! String
+    let expirationDate = coder.decodeObject(forKey: "expirationDate") as! Date?
 
     self.init(token: token, expirationDate: expirationDate)
   }
 
-  public func encodeWithCoder(coder: NSCoder) {
-    coder.encodeObject(token, forKey: "token")
-    coder.encodeObject(expirationDate, forKey: "expirationDate")
+  open func encode(with coder: NSCoder) {
+    coder.encode(token, forKey: "token")
+    coder.encode(expirationDate, forKey: "expirationDate")
   }
 
   let token: String
-  let expirationDate: NSDate?
+  let expirationDate: Date?
 
-  public var expired: Bool {
-    if let date = expirationDate where date.compare(NSDate()) == .OrderedAscending {
+  open var expired: Bool {
+    if let date = expirationDate , date.compare(Date()) == .orderedAscending {
       return true
     } else {
       return false
     }
   }
 
-  public var authorizationHeader: String {
+  open var authorizationHeader: String {
     return "Bearer \(token)"
   }
 
-  public func authenticateRequest(request: NSMutableURLRequest) {
+  open func authenticateRequest(_ request: NSMutableURLRequest) {
     request.setValue(authorizationHeader, forHTTPHeaderField: "Authorization")
   }
 

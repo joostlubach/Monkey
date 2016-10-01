@@ -2,7 +2,7 @@ import UIKit
 
 protocol APICredentials {
 
-  func authenticateRequest(request: NSURLRequest) -> NSURLRequest
+  func authenticateRequest(_ request: URLRequest) -> URLRequest
 
 }
 
@@ -14,10 +14,10 @@ class BearerTokenCredentials: APICredentials {
 
   let token: String
 
-  func authenticateRequest(request: NSURLRequest) -> NSURLRequest {
-    let mutableRequest = request.mutableCopy() as! NSMutableURLRequest
+  func authenticateRequest(_ request: URLRequest) -> URLRequest {
+    let mutableRequest = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
     mutableRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    return mutableRequest
+    return mutableRequest as URLRequest
   }
 
 }
@@ -25,8 +25,8 @@ class BearerTokenCredentials: APICredentials {
 class APIDeviceIdentifierCredentials: BearerTokenCredentials {
 
   init?() {
-    if let identifier = UIDevice.currentDevice().identifierForVendor {
-      super.init(token: identifier.UUIDString)
+    if let identifier = UIDevice.current.identifierForVendor {
+      super.init(token: identifier.uuidString)
     } else {
       super.init(token: "")
       return nil

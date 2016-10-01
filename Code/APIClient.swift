@@ -2,31 +2,32 @@ import UIKit
 import Alamofire
 import BrightFutures
 import SwiftyJSON
+import Result
 
-public class APIClient {
+open class APIClient {
 
   /// Initializes the API client.
   ///
   /// - parameter baseURL:   The base URL for the API. All paths will be appended to this URL.
-  public init(baseURL: NSURL, storesSession: Bool = true) {
+  public init(baseURL: URL, storesSession: Bool = true) {
     self.baseURL = baseURL
     self.storesSession = storesSession
   }
 
   /// A delegate for the client.
-  public var delegate: APIClientDelegate?
+  open var delegate: APIClientDelegate?
 
   /// The base URL for the API. All paths will be appended to this URL.
-  public let baseURL: NSURL
+  open let baseURL: URL
 
   /// The Alamofire manager to use for this client.
-  public var alamofireManager = Alamofire.Manager.sharedInstance
+  open var alamofireManager = Alamofire.SessionManager.default
 
   /// The trace level for this client.
-  public var traceLevel: TraceLevel = .RequestsAndStatuses
+  open var traceLevel: TraceLevel = .requestsAndStatuses
 
   /// Determines whether the client stores its session in the user defaults.
-  public var storesSession: Bool {
+  open var storesSession: Bool {
     didSet {
       if storesSession {
         writeSessionToUserDefaults(session)
@@ -36,10 +37,10 @@ public class APIClient {
     }
   }
 
-  private var _session: APISession?
+  fileprivate var _session: APISession?
 
   /// An API session. This may store some token so that the API is authenticated.
-  public var session: APISession? {
+  open var session: APISession? {
     get {
       if _session == nil && storesSession {
         _session = readSessionFromUserDefaults()
@@ -57,33 +58,33 @@ public class APIClient {
         writeSessionToUserDefaults(_session)
       }
 
-      let notificationCenter = NSNotificationCenter.defaultCenter()
+      let notificationCenter = NotificationCenter.default
       if _session != nil {
-        notificationCenter.postNotificationName(Monkey.APIClientDidAuthenticateNotification, object: self)
+        notificationCenter.post(name: Notification.Name(rawValue: Monkey.APIClientDidAuthenticateNotification), object: self)
       } else {
-        notificationCenter.postNotificationName(Monkey.APIClientDidUnauthenticateNotification, object: self)
+        notificationCenter.post(name: Notification.Name(rawValue: Monkey.APIClientDidUnauthenticateNotification), object: self)
       }
     }
   }
 
-  private func readSessionFromUserDefaults() -> APISession? {
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+  fileprivate func readSessionFromUserDefaults() -> APISession? {
+    let userDefaults = UserDefaults.standard
 
-    if let data = userDefaults.dataForKey(SessionKey) {
-      return (NSKeyedUnarchiver.unarchiveObjectWithData(data) as! APISession)
+    if let data = userDefaults.data(forKey: SessionKey) {
+      return (NSKeyedUnarchiver.unarchiveObject(with: data) as! APISession)
     } else {
       return nil
     }
   }
 
-  private func writeSessionToUserDefaults(sessionOrNil: APISession?) {
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+  fileprivate func writeSessionToUserDefaults(_ sessionOrNil: APISession?) {
+    let userDefaults = UserDefaults.standard
 
     if let session = sessionOrNil {
-      let data = NSKeyedArchiver.archivedDataWithRootObject(session)
-      userDefaults.setObject(data, forKey: SessionKey)
+      let data = NSKeyedArchiver.archivedData(withRootObject: session)
+      userDefaults.set(data, forKey: SessionKey)
     } else {
-      userDefaults.removeObjectForKey(SessionKey)
+      userDefaults.removeObject(forKey: SessionKey)
     }
   }
   
@@ -91,31 +92,31 @@ public class APIClient {
 
   // MARK: Interface
 
-  public func get(path: String, parameters: [String: AnyObject]? = nil, authenticate: Bool = true) -> APICall {
-    let call = buildCallWithMethod(.GET, path: path, parameters: parameters, authenticate: authenticate)
+  open func get(_ path: String, parameters: [String: AnyObject]? = nil, authenticate: Bool = true) -> APICall {
+    let call = buildCallWithMethod(.get, path: path, parameters: parameters, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
-  public func post(path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
-    let call = buildCallWithMethod(.POST, path: path, json: json, authenticate: authenticate)
+  open func post(_ path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
+    let call = buildCallWithMethod(.post, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
-  public func put(path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
-    let call = buildCallWithMethod(.PUT, path: path, json: json, authenticate: authenticate)
+  open func put(_ path: String, json: JSON? = nil, authenticate: Bool = true) -> APICall {
+    let call = buildCallWithMethod(.put, path: path, json: json, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
-  public func delete(path: String, authenticate: Bool = true) -> APICall {
-    let call = buildCallWithMethod(.DELETE, path: path, authenticate: authenticate)
+  open func delete(_ path: String, authenticate: Bool = true) -> APICall {
+    let call = buildCallWithMethod(.delete, path: path, authenticate: authenticate)
     queue.enqueue(call)
     return call
   }
 
-  public func upload(path: String, data: NSData, method: Alamofire.Method = .POST, authenticate: Bool = true) -> APICall {
+  open func upload(_ path: String, data: Data, method: Alamofire.HTTPMethod = .post, authenticate: Bool = true) -> APICall {
     let call = buildUploadWithMethod(method, path: path, data: data, authenticate: authenticate)
     queue.enqueue(call)
     return call
@@ -124,16 +125,16 @@ public class APIClient {
   // MARK: Authentication
 
   /// Determines whether the client is currently authenticated.
-  public var authenticated: Bool {
+  open var authenticated: Bool {
     return session != nil && !(session!.expired)
   }
 
-  private var waitingForAuthentication = [APICall]()
-  private var authenticationFuture: Future<Void, NoError>?
+  fileprivate var waitingForAuthentication = [APICall]()
+  fileprivate var authenticationFuture: Future<Void, NoError>?
 
   /// Checks whether the client has a (non-expired) session, and if not, uses `authenticate()` to authenticate itself.
-  public func ensureAuthenticated() -> Future<Bool, NoError> {
-    if let session = self.session where !session.expired {
+  open func ensureAuthenticated() -> Future<Bool, NoError> {
+    if let session = self.session , !session.expired {
       return Future(value: true)
     } else {
       return authenticate()
@@ -141,7 +142,7 @@ public class APIClient {
   }
 
   /// Authenticates this client using the authentication handler.
-  public func authenticate() -> Future<Bool, NoError> {
+  open func authenticate() -> Future<Bool, NoError> {
     if let delegate = delegate {
       return delegate.authenticateClient(self).map { _ in
         // We have successfully authenticated if the handler has set the session object.
@@ -153,7 +154,8 @@ public class APIClient {
   }
 
   /// Authenticates the client and retries the given operation. The operation is stalled while authentication is performed.
-  final func authenticateAndRetry(operation: APICall) -> Future<Void, NoError> {
+  @discardableResult
+  final func authenticateAndRetry(_ operation: APICall) -> Future<Void, NoError> {
     // Cancel this operation.
     operation.cancel()
 
@@ -191,27 +193,27 @@ public class APIClient {
 
   // MARK: Requests
 
-  private var queue = OperationQueue()
+  fileprivate var queue = OperationQueue()
 
-  private func buildMutableURLRequest(method: Alamofire.Method, path: String) -> NSMutableURLRequest {
-    let url = baseURL.URLByAppendingPathComponent(path)
+  fileprivate func buildMutableURLRequest(_ method: Alamofire.HTTPMethod, path: String) -> NSMutableURLRequest {
+    let url = baseURL.appendingPathComponent(path)
 
-    let urlRequest = NSMutableURLRequest(URL: url)
+    let urlRequest = NSMutableURLRequest(url: url)
     urlRequest.timeoutInterval = 4
-    urlRequest.HTTPMethod = method.rawValue
+    urlRequest.httpMethod = method.rawValue
     urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
     return urlRequest
   }
 
-  private func buildCallWithMethod(method: Alamofire.Method, path: String, parameters: [String: AnyObject]? = nil, json: JSON? = nil, authenticate: Bool = true) -> APICall {
+  fileprivate func buildCallWithMethod(_ method: Alamofire.HTTPMethod, path: String, parameters: [String: AnyObject]? = nil, json: JSON? = nil, authenticate: Bool = true) -> APICall {
     var request = buildMutableURLRequest(method, path: path)
 
     // Use Alamofire's parameter encoding to encode the parameters.
-    if let params = parameters {
-      request = ParameterEncoding.URL.encode(request, parameters: params).0.mutableCopy() as! NSMutableURLRequest
-    } else if let js = json {
-      request = ParameterEncoding.JSON.encode(request, parameters: js.dictionaryObject).0.mutableCopy() as! NSMutableURLRequest
+    if let params = parameters, let encodedRequest = try? URLEncoding.default.encode(request as URLRequest, with: params) {
+      request = (encodedRequest as NSURLRequest).mutableCopy() as! NSMutableURLRequest
+    } else if let js = json, let encodedRequest = try? JSONEncoding.default.encode(request as URLRequest, with: js.dictionaryObject) {
+      request = (encodedRequest as NSURLRequest).mutableCopy() as! NSMutableURLRequest
     }
 
     let call = APICall(client: self, request: request, authenticate: authenticate)
@@ -219,27 +221,27 @@ public class APIClient {
     return call
   }
 
-  private func buildUploadWithMethod(method: Alamofire.Method, path: String, data: NSData, authenticate: Bool = true) -> APIUpload {
+  fileprivate func buildUploadWithMethod(_ method: Alamofire.HTTPMethod, path: String, data: Data, authenticate: Bool = true) -> APIUpload {
     let request = buildMutableURLRequest(method, path: path)
-    request.HTTPBody = data
+    request.httpBody = data
 
     let call = APIUpload(client: self, request: request, authenticate: authenticate)
     prepareCall(call)
     return call
   }
 
-  private func prepareCall(call: APICall) {
+  fileprivate func prepareCall(_ call: APICall) {
     addDefaultHandlers(call)
     delegate?.client(self, willEnqueueCall: call)
   }
 
-  private func addDefaultHandlers(call: APICall) {
+  fileprivate func addDefaultHandlers(_ call: APICall) {
     // Show/hide network activity indicator.
-    UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    UIApplication.shared.isNetworkActivityIndicatorVisible = true
     call.response { [weak self] _ in
-      if let client = self where client.queue.count == 0 {
+      if let client = self , client.queue.count == 0 {
         // This is the last operation, and it's complete.
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
       }
     }
   }

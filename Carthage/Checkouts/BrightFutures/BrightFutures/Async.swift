@@ -8,11 +8,23 @@
 
 import Foundation
 
-public class Async<Value>: AsyncType {
+/// Implementation of the `AsyncType` protocol
+/// `Async` represents the result of an asynchronous operation
+/// and is typically returned from a method that initiates that
+/// asynchronous operation.
+/// Clients of that method receive the `Async` and can use it
+/// to register a callback for when the result of the asynchronous
+/// operation comes in.
+/// 
+/// This class is often not used directly. Instead, its subclass
+/// `Future` is used.
+open class Async<Value>: AsyncType {
 
-    typealias CompletionCallback = Value -> Void
+    typealias CompletionCallback = (Value) -> Void
     
-    public private(set) var result: Value? {
+    /// The actual result of the operation that the receiver represents or
+    /// `.None` if the operation is not yet completed.
+    public fileprivate(set) var result: Value? {
         willSet {
             assert(result == nil)
         }
@@ -26,34 +38,48 @@ public class Async<Value>: AsyncType {
     /// This queue is used for all callback related administrative tasks
     /// to prevent that a callback is added to a completed future and never
     /// executed or perhaps excecuted twice.
-    private let queue = Queue()
+    fileprivate let queue = DispatchQueue(label: "Internal Async Queue")
 
     /// Upon completion of the future, all callbacks are asynchronously scheduled to their
     /// respective execution contexts (which is either given by the client or returned from
     /// DefaultThreadingModel). Inside the context, this semaphore will be used
     /// to make sure that all callbacks are executed serially.
-    private let callbackExecutionSemaphore = Semaphore(value: 1);
-    private var callbacks = [CompletionCallback]()
+    fileprivate let callbackExecutionSemaphore = DispatchSemaphore(value: 1);
+    fileprivate var callbacks = [CompletionCallback]()
     
+    /// Creates an uncompleted `Async`
     public required init() {
         
     }
     
+    /// Creates an `Async` that is completed with the given result
     public required init(result: Value) {
         self.result = result
     }
     
-    public required init(result: Value, delay: NSTimeInterval) {
-        Queue.global.after(TimeInterval.In(delay)) {
+    /// Creates an `Async` that will be completed with the given result after the specified delay
+    public required init(result: Value, delay: DispatchTimeInterval) {
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + delay) {
             self.complete(result)
         }
     }
     
-    public required init<A: AsyncType where A.Value == Value>(other: A) {
+    /// Creates an `Async` that is completed when the given other `Async` is completed
+    public required init<A: AsyncType>(other: A) where A.Value == Value {
         completeWith(other)
     }
     
-    public required init(@noescape resolver: (result: Value -> Void) -> Void) {
+    /// Creates an `Async` that can be completed by calling the `result` closure passed to
+    /// the `resolver`. Example:
+    ///
+    ///     Async { res in
+    ///         Queue.async {
+    ///             // do some work
+    ///             res(42) // complete the async with result '42'
+    ///         }
+    ///     }
+    ///
+    public required init(resolver: (_ result: @escaping (Value) -> Void) -> Void) {
         resolver { val in
             self.complete(val)
         }
@@ -75,12 +101,12 @@ public class Async<Value>: AsyncType {
     /// Adds the given closure as a callback for when the Async completes. The closure is executed on the given context.
     /// If no context is given, the behavior is defined by the default threading model (see README.md)
     /// Returns self
-    public func onComplete(context: ExecutionContext = DefaultThreadingModel(), callback: Value -> Void) -> Self {
-        let wrappedCallback : Value -> Void = { [weak self] value in
-            let a = self // this is a workaround for a compiler segfault
-            
+    @discardableResult
+    open func onComplete(_ context: @escaping ExecutionContext = DefaultThreadingModel(), callback: @escaping (Value) -> Void) -> Self {
+        let wrappedCallback : (Value) -> Void = { [weak self] value in
+            let s = self
             context {
-                a?.callbackExecutionSemaphore.execute {
+                s?.callbackExecutionSemaphore.context {
                     callback(value)
                 }
                 return
@@ -102,7 +128,8 @@ public class Async<Value>: AsyncType {
 }
 
 extension Async: MutableAsyncType {
-    func tryComplete(value: Value) -> Bool{
+    @discardableResult
+    func tryComplete(_ value: Value) -> Bool{
         return queue.sync {
             guard self.result == nil else {
                 return false

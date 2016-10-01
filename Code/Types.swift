@@ -4,10 +4,10 @@ public let APIClientDidAuthenticateNotification = "co.mosdev.Monkey.APIClientDid
 public let APIClientDidUnauthenticateNotification = "co.mosdev.Monkey.APIClientDidAuthenticate"
 
 public enum TraceLevel: Int {
-  case None                = 0
-  case RequestsOnly        = 1
-  case RequestsAndStatuses = 2
-  case All                 = 10
+  case none                = 0
+  case requestsOnly        = 1
+  case requestsAndStatuses = 2
+  case all                 = 10
 }
 
 extension TraceLevel: Comparable {}

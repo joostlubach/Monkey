@@ -1,5 +1,6 @@
 import Foundation
 import BrightFutures
+import Result
 
 public protocol APIClientDelegate: class {
 
@@ -10,10 +11,10 @@ public protocol APIClientDelegate: class {
   /// is logged, but not displayed to the user.
   ///
   /// In case any error occurs, you should handle this and return a successful future with a nil argument.
-  func authenticateClient(client: APIClient) -> Future<Void, NoError>
+  func authenticateClient(_ client: APIClient) -> Future<Void, NoError>
 
   /// Called when the client will enqueue a call. Use this to add default headers, behavior or error handling.
-  func client(client: APIClient, willEnqueueCall call: APICall)
+  func client(_ client: APIClient, willEnqueueCall call: APICall)
 
 }
 
@@ -21,10 +22,10 @@ public protocol APIClientDelegate: class {
 
 public extension APIClientDelegate {
 
-  func authenticateClient(client: APIClient) -> Future<Void, NoError> {
+  func authenticateClient(_ client: APIClient) -> Future<Void, NoError> {
     return Future(value: ())
   }
 
-  func client(client: APIClient, willEnqueueCall call: APICall) {}
+  func client(_ client: APIClient, willEnqueueCall call: APICall) {}
 
 }

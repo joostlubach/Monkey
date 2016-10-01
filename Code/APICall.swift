@@ -6,9 +6,9 @@ import SwiftyJSON
 /**
  * API call.
  */
-public class APICall: Operation {
+open class APICall: Operation {
 
-  public typealias ProgressBlock = (current: Int64, total: Int64) -> Void
+  public typealias ProgressBlock = (_ current: Int64, _ total: Int64) -> Void
 
   /**
   Initializes an API request with a URL request.
@@ -23,23 +23,23 @@ public class APICall: Operation {
   }
 
   /// The client making the request.
-  public unowned let client: APIClient
+  open unowned let client: APIClient
 
-  public let request: NSMutableURLRequest
+  open let request: NSMutableURLRequest
 
-  public private(set) var status = OperationStatus.Ready
+  open fileprivate(set) var status = OperationStatus.ready
 
   /// The Alamofire request backing this operation.
   var alamofireRequest: Alamofire.Request?
 
   /// The current try count for this operation.
-  public private(set) var retryCount: Int = 1
+  open fileprivate(set) var retryCount: Int = 1
 
   /// The response. Only available when the operation is complete.
-  public private(set) var response: APIResponse?
+  open fileprivate(set) var response: APIResponse?
 
   /// Can be set to a block which will receive upload/download progress.
-  public var progressBlock: ProgressBlock?
+  open var progressBlock: ProgressBlock?
 
   /// A completion block.
   var completion: (() -> Void)?
@@ -49,68 +49,68 @@ public class APICall: Operation {
   typealias ResponseHandler = (APIResponse) -> Void
   typealias FinallyHandler = () -> Void
 
-  private var responseHandlers = [ResponseHandler]()
-  private var finallyHandlers = [FinallyHandler]()
+  fileprivate var responseHandlers = [ResponseHandler]()
+  fileprivate var finallyHandlers = [FinallyHandler]()
 
-  private let promise = Promise<APIResponse, APIError>()
+  fileprivate let promise = Promise<APIResponse, APIError>()
 
   /// Adds a response handler, which is called upon any result (success or failure).
-  public func response(handler: (APIResponse) -> Void) {
+  open func response(_ handler: @escaping (APIResponse) -> Void) {
     responseHandlers.append(handler)
   }
 
   /// Adds a finally handler, which is called after all response handlers have been processed.
-  public func finally(handler: () -> Void) {
+  open func finally(_ handler: @escaping () -> Void) {
     finallyHandlers.append(handler)
   }
 
   /// Adds a response handler, which is called upon success.
-  public func responseSuccess(handler: (APIResponse) -> Void) {
+  open func responseSuccess(_ handler: @escaping (APIResponse) -> Void) {
     response { response in
       response.whenSuccess(handler)
     }
   }
   
   /// Adds a response handler, which is called upon error.
-  public func responseError(handler: (APIError) -> Void) {
+  open func responseError(_ handler: @escaping (APIError) -> Void) {
     response { response in
       response.whenError(handler)
     }
   }
 
   /// Adds a response handler, which is called upon error of a specific type.
-  public func responseErrorOfType(errorType: APIErrorType, handler: (APIError) -> Void) {
+  open func responseErrorOfType(_ errorType: APIErrorType, handler: @escaping (APIError) -> Void) {
     response { response in
       response.whenErrorOfType(errorType, block: handler)
     }
   }
 
   /// Adds a data handler, which is called when the call succeeds, passing the raw data.
-  public func data(handler: (NSData) -> Void) {
+  open func data(_ handler: @escaping (Data) -> Void) {
     responseSuccess { response in
       response.whenData(handler)
     }
   }
 
   /// Adds a JSON handler, which is called when the call succeeds, and the response contained JSON.
-  public func json(handler: (JSON) -> Void) {
+  open func json(_ handler: @escaping (JSON) -> Void) {
     responseSuccess { response in
       response.whenJSON(handler)
     }
   }
 
-  public var future: Future<APIResponse, APIError> {
+  open var future: Future<APIResponse, APIError> {
     return promise.future
   }
 
-  public var jsonFuture: Future<JSON, APIError> {
+  open var jsonFuture: Future<JSON, APIError> {
     let promise = Promise<JSON, APIError>()
 
     self.promise.future.onSuccess { response in
       if let json = response.json {
         promise.success(json)
       } else {
-        promise.failure(APIError(type: .InvalidData))
+        promise.failure(APIError(type: .invalidData))
       }
     }
     self.promise.future.onFailure { error in
@@ -123,17 +123,17 @@ public class APICall: Operation {
   // MARK: Authentication
 
   /// Determines whether the request should be authenticated before it is started.
-  public var authenticate: Bool = true
+  open var authenticate: Bool = true
 
   /// Authenticates the current request.
-  private func authenticateRequest() {
+  fileprivate func authenticateRequest() {
     client.session?.authenticateRequest(request)
   }
 
   // MARK: Start & cancel
 
-  public func start() {
-    if status == .Cancelled {
+  open func start() {
+    if status == .cancelled {
       return
     }
 
@@ -144,44 +144,69 @@ public class APICall: Operation {
     alamofireRequest = buildAlamofireRequest()
 
     // Trace this request in the logger.
-    client.traceRequest(request)
+    client.traceRequest(request as URLRequest)
 
     // Handle progress.
-    alamofireRequest!.progress { [weak self] _, current, total in
-      self?.progressBlock?(current: current, total: total)
-    }
+    if let dataRequest = alamofireRequest as? DataRequest {
+      dataRequest.downloadProgress { [weak self] progress in
+        self?.progressBlock?(progress.completedUnitCount, progress.totalUnitCount)
+      }
 
-    alamofireRequest!.response { [weak self] _, httpResponse, data, error in
-      if let operation = self {
-        operation.handleResponse(httpResponse, data: data, error: error)
+      dataRequest.response { [weak self] response in
+        self?.handleResponse(response.response, data: response.data, error: response.error)
+      }
+    }
+    if let downloadRequest = alamofireRequest as? DownloadRequest {
+      downloadRequest.downloadProgress { [weak self] progress in
+        self?.progressBlock?(progress.completedUnitCount, progress.totalUnitCount)
+      }
+
+      downloadRequest.response { [weak self] response in
+        self?.handleResponse(response.response, data: response.resumeData, error: response.error)
+      }
+    }
+    if let uploadRequest = alamofireRequest as? UploadRequest {
+      uploadRequest.uploadProgress { [weak self] progress in
+        self?.progressBlock?(progress.completedUnitCount, progress.totalUnitCount)
+      }
+
+      uploadRequest.response { [weak self] response in
+        self?.handleResponse(response.response, data: response.data, error: response.error)
       }
     }
 
-    status = .Running
+//
+//    alamofireRequest!.response { [weak self] _, httpResponse, data, error in
+//      if let operation = self {
+//        operation.handleResponse(httpResponse, data: data, error: error)
+//      }
+//    }
+
+    status = .running
   }
 
-  public func cancel() {
+  open func cancel() {
     alamofireRequest?.cancel()
-    status = .Cancelled
+    status = .cancelled
   }
 
-  public func retry() {
-    if status == .Cancelled {
+  open func retry() {
+    if status == .cancelled {
       retryCount += 1
-      status = .Ready
+      status = .ready
     }
   }
 
-  private func buildAlamofireRequest() -> Alamofire.Request {
-    return client.alamofireManager.request(request)
+  fileprivate func buildAlamofireRequest() -> Alamofire.Request {
+    return client.alamofireManager.request(request as URLRequest)
   }
 
-  private func handleResponse(httpResponse: NSHTTPURLResponse?, data: NSData?, error: NSError?) {
+  fileprivate func handleResponse(_ httpResponse: HTTPURLResponse?, data: Data?, error: Error?) {
     // Store the response and handle it.
     let response = APIResponse(client: client, httpResponse: httpResponse, data: data)
     self.response = response
 
-    if authenticate && response.error?.type == .NotAuthorized {
+    if authenticate && response.error?.type == .notAuthorized {
 
       // Perform an authenticate & retry.
       if retryCount < 3 {
@@ -193,7 +218,7 @@ public class APICall: Operation {
     } else {
 
       // Call all response handlers.
-      Queue.main.async {
+      DispatchQueue.main.async {
         for handler in self.responseHandlers {
           handler(response)
         }
@@ -207,7 +232,7 @@ public class APICall: Operation {
       }
 
       // Call the finally handlers.
-      Queue.main.async {
+      DispatchQueue.main.async {
         for handler in self.finallyHandlers {
           handler()
         }
@@ -220,10 +245,10 @@ public class APICall: Operation {
 
 }
 
-public class APIUpload: APICall {
+open class APIUpload: APICall {
 
-  private override func buildAlamofireRequest() -> Alamofire.Request {
-    return Alamofire.Manager.sharedInstance.upload(request, data: request.HTTPBody!)
+  fileprivate override func buildAlamofireRequest() -> Alamofire.Request {
+    return Alamofire.SessionManager.default.upload(request.httpBody!, with: request as URLRequest)
   }
 
 }

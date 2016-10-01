@@ -1,9 +1,9 @@
 import Foundation
 import SwiftyJSON
 
-public class APIResponse {
+open class APIResponse {
 
-  init(client: APIClient?, httpResponse: NSHTTPURLResponse?, data: NSData?) {
+  init(client: APIClient?, httpResponse: HTTPURLResponse?, data: Data?) {
     self.client = client
     self.httpResponse = httpResponse
     self.data = data
@@ -11,48 +11,48 @@ public class APIResponse {
     resolve()
   }
 
-  public weak var client: APIClient?
-  public let httpResponse: NSHTTPURLResponse?
+  open weak var client: APIClient?
+  open let httpResponse: HTTPURLResponse?
 
-  public private(set) var status = 0
-  public private(set) var error: APIError?
-  public private(set) var underlyingError: NSError?
+  open fileprivate(set) var status = 0
+  open fileprivate(set) var error: APIError?
+  open fileprivate(set) var underlyingError: NSError?
 
   var success: Bool {
     return error == nil
   }
 
-  public private(set) var data: NSData?
-  public private(set) var json: JSON?
+  open fileprivate(set) var data: Data?
+  open fileprivate(set) var json: JSON?
 
   // MARK: Handlers
 
-  public func whenSuccess(@noescape block: (APIResponse) -> Void) {
+  open func whenSuccess(_ block: (APIResponse) -> Void) {
     if success {
       block(self)
     }
   }
 
-  public func whenData(@noescape block: (NSData) -> Void) {
+  open func whenData(_ block: (Data) -> Void) {
     if let data = data {
       block(data)
     }
   }
 
-  public func whenJSON(@noescape block: (JSON) -> Void) {
+  open func whenJSON(_ block: (JSON) -> Void) {
     if let json = json {
       block(json)
     }
   }
 
-  public func whenError(@noescape block: (APIError) -> Void) {
+  open func whenError(_ block: (APIError) -> Void) {
     if let error = error {
       block(error)
     }
   }
 
-  public func whenErrorOfType(errorType: APIErrorType, @noescape block: (APIError) -> Void) {
-    if let error = error where error.type == errorType {
+  open func whenErrorOfType(_ errorType: APIErrorType, block: (APIError) -> Void) {
+    if let error = error , error.type == errorType {
       block(error)
     }
   }
@@ -62,28 +62,28 @@ public class APIResponse {
   func resolve() {
     status = httpResponse?.statusCode ?? 0
 
-    if let data = self.data where data.length > 0 {
+    if let data = self.data , data.count > 0 {
       do {
-        let jsonDict: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+        let jsonDict = try JSONSerialization.jsonObject(with: data, options: [])
         json = JSON(jsonDict)
       } catch let error as NSError {
         json = nil
 
         // Mark an invalid data error. This might be overridden later if there is a specific HTTP error.
-        self.error = APIError(type: .InvalidData)
+        self.error = APIError(type: .invalidData)
         self.error!.underlyingError = error
       }
     }
 
     // Handle HTTP specific errors.
     switch status {
-    case 0: handleError(.NotReachable)
+    case 0: handleError(.notReachable)
     case 100..<400: handleSuccess() // Might still be a server error.
-    case 400: handleError(.BadRequest)
-    case 401: handleError(.NotAuthorized)
-    case 403: handleError(.Forbidden)
-    case 404: handleError(.NotFound)
-    case 400..<500: handleError(.OtherClientError)
+    case 400: handleError(.badRequest)
+    case 401: handleError(.notAuthorized)
+    case 403: handleError(.forbidden)
+    case 404: handleError(.notFound)
+    case 400..<500: handleError(.otherClientError)
     default: handleServerError()
     }
 
@@ -92,25 +92,25 @@ public class APIResponse {
     }
   }
 
-  private func handleSuccess() {
+  fileprivate func handleSuccess() {
     client?.traceSuccess(status, json: json ?? JSON.null)
   }
 
-  private func handleError(errorType: APIErrorType) {
+  fileprivate func handleError(_ errorType: APIErrorType) {
     let message = json?["error"].string
     error = APIError(type: errorType, status: status, message: message)
     error!.json = json
     error!.data = data
   }
 
-  private func handleServerError() {
+  fileprivate func handleServerError() {
     let message = json?["error"].string
     error = APIError(type: .ServerError, status: status, message: message)
     error!.json = json
     error!.data = data
 
     // Dump the full server data.
-    if let data = self.data, let output = NSString(data: data, encoding: NSUTF8StringEncoding) {
+    if let data = self.data, let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
       print("---- SERVER OUTPUT ----")
       print(output)
       print("---- END OF SERVER OUTPUT ----")

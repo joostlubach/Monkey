@@ -2,17 +2,17 @@ import Foundation
 
 public enum OperationStatus {
 
-  case Ready
-  case Running
-  case Finished
-  case Cancelled
+  case ready
+  case running
+  case finished
+  case cancelled
 
 }
 
 public enum QueueStatus {
 
-  case Stopped
-  case Running
+  case stopped
+  case running
 
 }
 
@@ -36,13 +36,13 @@ class OperationQueue {
   var maxConcurrency = 3
 
   /// The status of the queue.
-  var status = QueueStatus.Stopped
+  var status = QueueStatus.stopped
 
   /// The queued operations.
-  private(set) var queued = [Operation]()
+  fileprivate(set) var queued = [Operation]()
 
   /// The currently running operations.
-  private(set) var running = [Operation]()
+  fileprivate(set) var running = [Operation]()
 
   var count: Int {
     return queued.count + running.count
@@ -53,10 +53,10 @@ class OperationQueue {
   
   - parameter operation:  The operation to enqueue.
   */
-  func enqueue(operation: Operation) {
+  func enqueue(_ operation: Operation) {
     queued.append(operation)
 
-    if status == .Stopped {
+    if status == .stopped {
       start()
     }
   }
@@ -68,10 +68,10 @@ class OperationQueue {
   - returns:          Whether the operation was dequeued. If the operation was not queued in the first place,
                      this value will be false.
   */
-  func dequeue(operation: Operation) -> Bool {
+  func dequeue(_ operation: Operation) -> Bool {
     for idx in 0..<queued.count {
       if queued[idx] === operation {
-        queued.removeAtIndex(idx)
+        queued.remove(at: idx)
         return true
       }
     }
@@ -80,11 +80,11 @@ class OperationQueue {
 
   /// Starts the queue. If it was already running, this will do nothing.
   func start() {
-    if status == .Running {
+    if status == .running {
       return
     }
 
-    status = .Running
+    status = .running
     next()
   }
 
@@ -93,11 +93,11 @@ class OperationQueue {
   again when `start()` is called. If the queue was already stopped, this will do nothing.
   */
   func stop() {
-    if status == .Stopped {
+    if status == .stopped {
       return
     }
 
-    status = .Stopped
+    status = .stopped
 
     for operation in running {
       operation.cancel()
@@ -106,8 +106,8 @@ class OperationQueue {
   }
 
   /// Starts the next operation in the queue.
-  private func next() {
-    if status == .Stopped {
+  fileprivate func next() {
+    if status == .stopped {
       return
     }
 
@@ -122,13 +122,13 @@ class OperationQueue {
     }
 
     // Start
-    let operation = queued.removeAtIndex(0)
+    let operation = queued.remove(at: 0)
 
     switch operation.status {
-    case .Running:
+    case .running:
       // Output a warning, and don't run the operation again.
       print("Monkey.Queue: operation already running")
-    case .Finished:
+    case .finished:
       // Output a warning, and don't run the operation again.
       print("Monkey.Queue: operation already finished")
     default:
@@ -144,10 +144,10 @@ class OperationQueue {
   }
 
   /// Called when an operation is completed.
-  private func operationComplete(operation: Operation) {
+  fileprivate func operationComplete(_ operation: Operation) {
     for idx in 0..<running.count {
       if running[idx] === operation {
-        running.removeAtIndex(idx)
+        running.remove(at: idx)
         break
       }
     }
