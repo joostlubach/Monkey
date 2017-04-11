@@ -3,7 +3,7 @@ import Foundation
 public protocol APISession: NSCoding {
 
   var expired: Bool { get }
-  func authenticateRequest(_ request: NSMutableURLRequest)
+  func authenticateRequest(_ request: URLRequest) -> URLRequest
 
 }
 
@@ -40,8 +40,10 @@ open class BearerTokenAPISession: NSObject, APISession, NSCoding {
     return "Bearer \(token)"
   }
 
-  open func authenticateRequest(_ request: NSMutableURLRequest) {
-    request.setValue(authorizationHeader, forHTTPHeaderField: "Authorization")
+  open func authenticateRequest(_ request: URLRequest) -> URLRequest {
+    var newRequest = request
+    newRequest.setValue(authorizationHeader, forHTTPHeaderField: "Authorization")
+    return newRequest
   }
 
 }

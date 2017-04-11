@@ -16,7 +16,7 @@ open class APICall: Operation {
   - parameter client:      The API client making the request (stored as a weak reference).
   - parameter request:     The URL request to make.
   */
-  init(client: APIClient, request: NSMutableURLRequest, authenticate: Bool = true) {
+  init(client: APIClient, request: URLRequest, authenticate: Bool = true) {
     self.client = client
     self.authenticate = authenticate
     self.request = request
@@ -25,7 +25,7 @@ open class APICall: Operation {
   /// The client making the request.
   open unowned let client: APIClient
 
-  open let request: NSMutableURLRequest
+  open private(set) var request: URLRequest
 
   open private(set) var status = OperationStatus.ready
 
@@ -127,7 +127,8 @@ open class APICall: Operation {
 
   /// Authenticates the current request.
   private func authenticateRequest() {
-    client.session?.authenticateRequest(request)
+    guard let session = client.session else { return }
+    request = session.authenticateRequest(request)
   }
 
   // MARK: Start & cancel

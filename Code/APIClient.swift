@@ -201,10 +201,10 @@ open class APIClient {
 
   private var queue = OperationQueue()
 
-  private func buildMutableURLRequest(_ method: Alamofire.HTTPMethod, path: String) -> MutableURLRequest {
+  private func buildURLRequest(_ method: Alamofire.HTTPMethod, path: String) -> URLRequest {
     let url = baseURL.appendingPathComponent(path)
 
-    let urlRequest = NSMutableURLRequest(url: url)
+    var urlRequest = URLRequest(url: url)
     urlRequest.timeoutInterval = 4
     urlRequest.httpMethod = method.rawValue
     urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -213,13 +213,13 @@ open class APIClient {
   }
 
   private func buildCallWithMethod(_ method: Alamofire.HTTPMethod, path: String, parameters: [String: Any]? = nil, json: JSON? = nil, authenticate: Bool = true) -> APICall {
-    var request = buildMutableURLRequest(method, path: path)
+    var request = buildURLRequest(method, path: path)
 
     // Use Alamofire's parameter encoding to encode the parameters.
     if let params = parameters, let encodedRequest = try? URLEncoding.default.encode(request as URLRequest, with: params) {
-      request = (encodedRequest as NSURLRequest).mutableCopy() as! MutableURLRequest
+      request = encodedRequest
     } else if let js = json, let encodedRequest = try? JSONEncoding.default.encode(request as URLRequest, with: js.dictionaryObject) {
-      request = (encodedRequest as NSURLRequest).mutableCopy() as! MutableURLRequest
+      request = encodedRequest
     }
 
     let call = APICall(client: self, request: request, authenticate: authenticate)
@@ -228,7 +228,7 @@ open class APIClient {
   }
 
   private func buildUploadWithMethod(_ method: Alamofire.HTTPMethod, path: String, data: Data, authenticate: Bool = true) -> APIUpload {
-    let request = buildMutableURLRequest(method, path: path)
+    var request = buildURLRequest(method, path: path)
     request.httpBody = data
 
     let call = APIUpload(client: self, request: request, authenticate: authenticate)
